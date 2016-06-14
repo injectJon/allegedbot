@@ -2,13 +2,18 @@
 import { Client } from 'cursejs';
 import Promise from 'bluebird';
 import _ from 'lodash';
+import mongoose from 'mongoose';
 
-import { onMessage } from './onMessage';
+import { emoteReplace, cmdFunction } from './onMessage';
 import { servers, options } from './config';
 
 const request = Promise.promisifyAll(require('request'));
 
-//---------------------------------------------------------------------------
+// Initiate mongodb connection
+mongoose.connect('mongodb://localhost:27017/cursebot');
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 //---------------------------------------------------------------------------
 
@@ -30,29 +35,42 @@ const blackList = {};     // blacklisted emotes
 
 const app = new Client();
 
-// Server Options
-
-function messageHandler(message) {
+function msgReceivedHandler(message) {
   let sID;
-  let sName;
+  // let sName;
 
   if (app.channels[message.conversation.ID]) {
     sID = app.channels[message.conversation.ID].server.ID; // server ID
-    sName = app.channels[message.conversation.ID].server.name; // server name
 
+    // sName = app.channels[message.conversation.ID].server.name; // server name
     // console.log(`Server Name: ${sName} \n  Server ID: ${sID}`);
   }
 
   servers.forEach(server => {
     if (sID === server.id) {
-      onMessage(message, server, emotes, blackList);
+      emoteReplace(message, db, server, emotes, blackList);
+      cmdFunction(message, db, server);
+    }
+  });
+}
+
+function msgEditedHandler(message) {
+  let sID;
+
+  if (app.channels[message.conversation.ID]) {
+    sID = app.channels[message.conversation.ID].server.ID; // server ID
+  }
+
+  servers.forEach(server => {
+    if (sID === server.id) {
+      emoteReplace(message, db, server, emotes, blackList);
     }
   });
 }
 
 
-app.on('message_received', messageHandler);
-app.on('message_edited', messageHandler);
+app.on('message_received', msgReceivedHandler);
+app.on('message_edited', msgEditedHandler);
 
 
 // Download/Load functions
