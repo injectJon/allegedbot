@@ -11,17 +11,6 @@ export const servers = [
     addcmd: true,
   },
   {
-    id: 'da59264c-e1a0-4602-93c7-0847e31f2fe3',
-    label: 'xarathos',
-    emotes: true,
-    spamFiler: 25,
-    cmdSupport: true,
-    bully: true,
-    love: true,
-    eightball: true,
-    addcmd: false,
-  },
-  {
     id: 'a6932828-c635-4d4a-8743-7f589ff644d7',
     label: 'quin69',
     emotes: true,

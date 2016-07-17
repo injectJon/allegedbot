@@ -4,8 +4,10 @@ import Promise from 'bluebird';
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
-import { emoteReplace, cmdFunction } from './onMessage';
-import { servers, options } from './config';
+import { emoteHandler, commandHandler } from './handlers';
+import { options } from './config';
+
+import { Server } from './model';
 
 const request = Promise.promisifyAll(require('request'));
 
@@ -30,48 +32,49 @@ const TWITCH_URL_TEMPLATE = 'https://static-cdn.jtvnw.net/emoticons/v1/{image_id
 const BTTV_URL_TEMPLATE = 'https://cdn.betterttv.net/emote/{image_id}/2x';
 
 // Global variables
-const emotes = {};        // full list of emote data
-const blackList = {};     // blacklisted emotes
+const emoteWhitelist = ['LUL'];
+
+const emotes = {
+  N1neXD: {
+    code: 'N1neXD',
+    url: 'https://cdn.betterttv.net/emote/5756e1d5318862cb5fb1b95f/1x',
+  },
+};
+
+const blacklist = [];
+
 
 const app = new Client();
 
-function msgReceivedHandler(message) {
-  let sID;
-  // let sName;
-
-  if (app.channels[message.conversation.ID]) {
-    sID = app.channels[message.conversation.ID].server.ID; // server ID
-
-    // sName = app.channels[message.conversation.ID].server.name; // server name
-    // console.log(`Server Name: ${sName} \n  Server ID: ${sID}`);
+function lookupServerId(message) {
+  if (!app.channels[message.conversation.ID]) {
+    return undefined;
   }
-
-  servers.forEach(server => {
-    if (sID === server.id) {
-      emoteReplace(message, db, server, emotes, blackList);
-      cmdFunction(message, db, server);
-    }
-  });
+  return app.channels[message.conversation.ID].server.ID;
 }
 
-function msgEditedHandler(message) {
-  let sID;
-
-  if (app.channels[message.conversation.ID]) {
-    sID = app.channels[message.conversation.ID].server.ID; // server ID
-  }
-
-  servers.forEach(server => {
-    if (sID === server.id) {
-      emoteReplace(message, db, server, emotes, blackList);
+function handleServerMessage(handler) {
+  return (message) => {
+    const serverId = lookupServerId(message);
+    if (!serverId) {
+      console.log('Private Message');
+      return; // Message is not to a server, ignore.
     }
-  });
+
+    Server.findByServerId(serverId)
+      .then(server => handler({ message, emotes, server, serverId }))
+      .catch(err => console.log(`Unknown Error: ${err}`));
+  };
 }
 
+app.on('message_received', handleServerMessage(context => {
+  emoteHandler(context);
+  commandHandler(context);
+}));
 
-app.on('message_received', msgReceivedHandler);
-app.on('message_edited', msgEditedHandler);
-
+app.on('message_edited', handleServerMessage(context => {
+  emoteHandler(context);
+}));
 
 // Download/Load functions
 
@@ -88,58 +91,67 @@ function downloadJson(url) {
     });
 }
 
+function isEmoteAllowed(emote) {
+  const isTooShort = emote.length < 4;
+  const isBlacklisted = blacklist.includes(emote);
+  const isWhitelisted = emoteWhitelist.includes(emote);
+
+  return isWhitelisted || !(isTooShort || isBlacklisted);
+}
+
 // ------- TWITCH EMOTES ---------------
 function loadTwitchEmoteData(data) {
   _.forEach(data.images, (emote, id) => {
-    emotes[emote.code] = {
-      code: emote.code,
-      url: TWITCH_URL_TEMPLATE.replace('{image_id}', id),
-    };
+    if (isEmoteAllowed(emote)) {
+      emotes[emote.code] = {
+        code: emote.code,
+        url: TWITCH_URL_TEMPLATE.replace('{image_id}', id),
+      };
+    }
   });
 }
 
 // ------- BTTV Global Emotes-----------
 function loadBTTVGEmoteData(data) {
   _.forEach(data.emotes, (emote) => {
-    emotes[emote.code] = {
-      code: emote.code,
-      url: BTTV_URL_TEMPLATE.replace('{image_id}', emote.id),
-    };
+    if (isEmoteAllowed(emote)) {
+      emotes[emote.code] = {
+        code: emote.code,
+        url: BTTV_URL_TEMPLATE.replace('{image_id}', emote.id),
+      };
+    }
   });
 }
 
 // ------- BTTV User Emotes-------------
 function loadBTTVUEmoteData(data) {
   _.forEach(data, (id, emote) => {
-    emotes[emote] = {
-      code: emote,
-      url: BTTV_URL_TEMPLATE.replace('{image_id}', id),
-    };
+    if (isEmoteAllowed(emote)) {
+      emotes[emote] = {
+        code: emote,
+        url: BTTV_URL_TEMPLATE.replace('{image_id}', id),
+      };
+    }
   });
 }
 
 // ------- BLACKLIST -------------------
 function loadBlackListData(data) {
-  _.forEach(data.blacklist, (emote) => {
-    blackList[emote] = {
-      code: emote,
-    };
-  });
+  blacklist.push(...data.blacklist);
 }
-
 
 Promise
   .props({
     twitchEmotes: downloadJson(TWITCH_IMAGES_URL),
     bttvGlobalEmotes: downloadJson(BTTVG_EMOTE_URL),
     bttvEmotes: downloadJson(BTTV_EMOTE_URL),
-    blackList: downloadJson(BLACKLIST_URL),
+    blacklist: downloadJson(BLACKLIST_URL),
   })
   .then(props => {
+    loadBlackListData(props.blacklist);
     loadTwitchEmoteData(props.twitchEmotes);
     loadBTTVGEmoteData(props.bttvGlobalEmotes);
     loadBTTVUEmoteData(props.bttvEmotes);
-    loadBlackListData(props.blackList);
 
     app.run(options.username, options.password);
   });
