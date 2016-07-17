@@ -6,12 +6,12 @@ export function bullyCommand(context) {
     return;
   }
 
-  if (args.length !== 1) {
+  if (args.length < 1) {
     message.reply("I don't know what you want me to do.");
     return;
   }
 
-  const target = args[0];
+  const target = args.join(' ');
 
   const odds = Math.random();
   if (odds >= 0.65) {

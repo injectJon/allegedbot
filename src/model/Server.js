@@ -17,6 +17,9 @@ export const ServerSchema = new Schema(
       type: String,
       required: true,
     }],
+    moderators: [{
+      type: String,
+    }],
     emotes: {
       type: Boolean,
       default: false,

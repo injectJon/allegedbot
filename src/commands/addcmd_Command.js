@@ -3,8 +3,14 @@ import { CustomCommand } from '../model';
 export function addcmdCommand(context) {
   const { message, server, args } = context;
 
-  if (args.length === 0) {
-    message.reply('do something here');
+  if (!server) return;
+
+  if (server.admins.indexOf(message.senderID) < 0) {
+    return;
+  }
+
+  if (args.length < 2) {
+    message.reply('Try harder..');
     return;
   }
 

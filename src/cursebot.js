@@ -12,10 +12,13 @@ import { Server } from './model';
 const request = Promise.promisifyAll(require('request'));
 
 // Initiate mongodb connection
-mongoose.connect('mongodb://localhost:27017/cursebot');
+function connectToDB() {
+  console.log('Connecting to Database...');
+  mongoose.connect('mongodb://localhost:27017/cursebot');
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+  const db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+}
 
 //---------------------------------------------------------------------------
 
@@ -32,15 +35,10 @@ const TWITCH_URL_TEMPLATE = 'https://static-cdn.jtvnw.net/emoticons/v1/{image_id
 const BTTV_URL_TEMPLATE = 'https://cdn.betterttv.net/emote/{image_id}/2x';
 
 // Global variables
+
+const emotes = {};
+
 const emoteWhitelist = ['LUL'];
-
-const emotes = {
-  N1neXD: {
-    code: 'N1neXD',
-    url: 'https://cdn.betterttv.net/emote/5756e1d5318862cb5fb1b95f/1x',
-  },
-};
-
 const blacklist = [];
 
 
@@ -55,6 +53,8 @@ function lookupServerId(message) {
 
 function handleServerMessage(handler) {
   return (message) => {
+    // console.log(`[${message.senderID}]  ${message.senderName} : ${message.content}`);
+
     const serverId = lookupServerId(message);
     if (!serverId) {
       console.log('Private Message');
@@ -92,6 +92,7 @@ function downloadJson(url) {
 }
 
 function isEmoteAllowed(emote) {
+  // FIXTHIS: The new filter function is broken.
   const isTooShort = emote.length < 4;
   const isBlacklisted = blacklist.includes(emote);
   const isWhitelisted = emoteWhitelist.includes(emote);
@@ -152,6 +153,8 @@ Promise
     loadTwitchEmoteData(props.twitchEmotes);
     loadBTTVGEmoteData(props.bttvGlobalEmotes);
     loadBTTVUEmoteData(props.bttvEmotes);
+
+    connectToDB();
 
     app.run(options.username, options.password);
   });

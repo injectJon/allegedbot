@@ -1,7 +1,10 @@
 import { CustomCommand } from '../model';
 
+
 export function editcmdCommand(context) {
   const { message, server, args } = context;
+
+  if (!server) return;
 
   if (server.admins.indexOf(message.senderID) < 0) {
     return;

@@ -1,18 +1,19 @@
-import { Server } from '../model';
-
-const options = ['enable', 'disable'];
-const flags = ['emotes', 'bully'];
 
 export function featureCommand(context) {
   const { message, server, args } = context;
 
-  if (!server) {
-    message.reply('This server is not registered.');
+  const options = ['enable', 'disable'];
+  const flags = ['emotes', 'bully', '8ball', 'love'];
+
+  if (!server) return;
+
+  if (server.admins.indexOf(message.senderID) < 0) {
     return;
   }
 
-  const option = args[0];
-  const flag = args[1];
+  const option = args.shift().toLowerCase();
+  const flag = args.shift().toLowerCase();
+  console.log(`option: ${option}, flag: ${flag}`);
 
   if (!options.includes(option)) {
     message.reply(`Unknown option '${option}'`);
@@ -24,15 +25,16 @@ export function featureCommand(context) {
     return;
   }
 
-  if (option === 'enabled') {
-    server[flag] = true;
-  } else {
-    server[flag] = false;
+  if (flag === '8ball') {
+    const casualSwitch = 'eightball';
+    server[casualSwitch] = (option === 'enable');
   }
+
+  server[flag] = (option === 'enable');
 
   server.save()
     .then(() => {
-      message.reply(`${flag} is now ${option}d.`);
+      message.reply(`The ${flag} feature has been ${option}d.`);
     })
     .catch(err => {
       console.log(`Unable to save server ${err}`);

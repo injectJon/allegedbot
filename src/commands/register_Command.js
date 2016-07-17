@@ -1,23 +1,30 @@
 import { Server } from '../model';
 
 export function registerCommand(context) {
-  if (context.server) {
+  const { message, server, serverId } = context;
+
+  const isGod = '23807572';
+  if (!message.senderID === isGod) {
+    return;
+  }
+
+  if (server) {
     // Server is already registered, show some kind of error message.
-    context.message.reply('This server has already been registered.');
+    message.reply('This server has already been registered.');
     return;
   }
 
   const newServer = new Server({
-    serverId: context.serverId,
-    admins: [context.message.senderID],
+    serverId,
+    admins: [message.senderID],
   });
 
   newServer.save()
     .then(() => {
-      context.message.reply('Success! Your server has been registered.');
+      message.reply('Success! Your server has been registered.');
     })
     .catch(err => {
       console.log(`Unable to save new server ${err}`);
-      context.message.reply('Unable to register your server at this time, please try again later.');
+      message.reply('Unable to register your server at this time, please try again later.');
     });
 }
