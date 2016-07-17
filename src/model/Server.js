@@ -25,12 +25,6 @@ export const ServerSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    customEmotes: [{
-      type: String,
-    }],
-    customCommands: [{
-      type: String,
-    }],
     bully: {
       type: Boolean,
       default: false,
