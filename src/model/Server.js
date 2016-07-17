@@ -17,10 +17,6 @@ export const ServerSchema = new Schema(
       type: String,
       required: true,
     }],
-    config: {
-      type: Boolean,
-      default: true,
-    },
     emotes: {
       type: Boolean,
       default: false,
@@ -29,22 +25,13 @@ export const ServerSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    bullyData: {  // in the future, this will link to a custom bully message
-      type: Schema.Types.ObjectId,
-    },
     love: {
       type: Boolean,
       default: false,
     },
-    loveData: {  // in the future, this will link to a custom love message
-      type: Schema.Types.ObjectId,
-    },
     eightball: {
       type: Boolean,
       default: false,
-    },
-    eightballData: {  // in the future, this will link to custom 8ball messages
-      type: Schema.Types.ObjectId,
     },
   }, options);
 

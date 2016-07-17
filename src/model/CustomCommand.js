@@ -16,7 +16,7 @@ export const CustomCommandSchema = new Schema(
       type: String,
       required: true,
     },
-    message: {
+    response: {
       type: String,
       required: true,
     },

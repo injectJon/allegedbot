@@ -1,3 +1,3 @@
 export { CustomCommand } from './CustomCommand';
-export { Emote } from './Emote';
+export { CustomEmote } from './CustomEmote';
 export { Server } from './Server';

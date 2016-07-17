@@ -1,8 +1,9 @@
-import { registerCommand } from './registerCommand';
-import { bullyCommand } from './bullyCommand';
-import { enableCommand } from './enableCommand';
-import { disableCommand } from './disableCommand';
-import { addcmdCommand } from './addcmdCommand';
+import { registerCommand } from './register_Command';
+import { bullyCommand } from './bully_Command';
+import { featureCommand } from './feature_Command';
+import { addcmdCommand } from './addcmd_Command';
+import { delcmdCommand } from './delcmd_Command';
+import { editcmdCommand } from './editcmd_Command';
 
 export const internalCommands = [
   {
@@ -14,15 +15,19 @@ export const internalCommands = [
     handler: bullyCommand,
   },
   {
-    command: 'enable',
-    handler: enableCommand,
-  },
-  {
-    command: 'disable',
-    handler: disableCommand,
+    command: 'feature',
+    handler: featureCommand,
   },
   {
     command: 'addcmd',
     handler: addcmdCommand,
+  },
+  {
+    command: 'delcmd',
+    handler: delcmdCommand,
+  },
+  {
+    command: 'editcmd',
+    handler: editcmdCommand,
   },
 ];

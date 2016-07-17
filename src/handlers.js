@@ -80,7 +80,7 @@ export function commandHandler(context) {
     CustomCommand.findByCode(server.serverId, commandStr)
       .then(customCommand => {
         if (customCommand) {
-          message.reply(customCommand.message);
+          message.reply(customCommand.response);
         }
       })
       .catch(err => {
