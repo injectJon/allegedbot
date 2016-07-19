@@ -1,16 +1,21 @@
 import { CustomCommand } from '../model';
-
+import { isAdmin } from '../utils';
 
 export function editcmdCommand(context) {
   const { message, server, args } = context;
 
   if (!server) return;
 
-  if (server.admins.indexOf(message.senderID) < 0) {
+  if (!isAdmin(server, message)) {
     return;
   }
 
-  if (args.length < 2) {
+  if (args.length === 0) {
+    message.reply('format:  !editcmd <code> <edited contents>' +
+    '\noptions available within contents:  {messagesender}');
+  }
+
+  if (args.length < 2 && args.length > 0) {
     message.reply('No edited content was found.');
     return;
   }

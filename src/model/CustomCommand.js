@@ -20,6 +20,13 @@ export const CustomCommandSchema = new Schema(
       type: String,
       required: true,
     },
+    complex: {
+      type: Boolean,
+      required: true,
+    },
+    tools: [{
+      type: String,
+    }],
   }, options);
 
 CustomCommandSchema.statics.findByCode = function findByServerId(serverId, code) {

@@ -7,7 +7,7 @@ export function bullyCommand(context) {
   }
 
   if (args.length < 1) {
-    message.reply("I don't know what you want me to do.");
+    message.reply(`*I, your bot overlord,* have bullied ${message.senderName} with ~GREAT~ success! quinJudy`);
     return;
   }
 

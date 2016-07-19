@@ -1,13 +1,17 @@
 import { registerCommand } from './register_Command';
 import { bullyCommand } from './bully_Command';
+import { eightBallCommand } from './8ball_Command';
+import { loveCommand } from './love_Command';
 import { featureCommand } from './feature_Command';
 import { addcmdCommand } from './addcmd_Command';
 import { delcmdCommand } from './delcmd_Command';
 import { editcmdCommand } from './editcmd_Command';
 import { addemoteCommand } from './addemote_Command';
 import { delemoteCommand } from './delemote_Command';
-import { eightBallCommand } from './8ball_Command';
-import { loveCommand } from './love_Command';
+import { cmdlistCommand } from './cmdlist_Command';
+import { emotelistCommand } from './emotelist_Command';
+
+import { findRandomUser, includeMessageSender } from './tools';
 
 export const internalCommands = [
   {
@@ -17,6 +21,14 @@ export const internalCommands = [
   {
     command: 'bully',
     handler: bullyCommand,
+  },
+  {
+    command: '8ball',
+    handler: eightBallCommand,
+  },
+  {
+    command: 'love',
+    handler: loveCommand,
   },
   {
     command: 'feature',
@@ -43,11 +55,22 @@ export const internalCommands = [
     handler: delemoteCommand,
   },
   {
-    command: '8ball',
-    handler: eightBallCommand,
+    command: 'cmdlist',
+    handler: cmdlistCommand,
   },
   {
-    command: 'love',
-    handler: loveCommand,
+    command: 'emotelist',
+    handler: emotelistCommand,
+  },
+];
+
+export const commandTools = [
+  {
+    code: '{@randomuser}',
+    handler: findRandomUser,
+  },
+  {
+    code: '{messagesender}',
+    handler: includeMessageSender,
   },
 ];

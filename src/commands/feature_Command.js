@@ -1,15 +1,20 @@
+import { isAdmin } from '../utils';
 
 export function featureCommand(context) {
   const { message, server, args } = context;
 
-  const options = ['enable', 'disable'];
-  const flags = ['emotes', 'bully', '8ball', 'love'];
-
   if (!server) return;
 
-  if (server.admins.indexOf(message.senderID) < 0) {
+  if (!isAdmin(server, message)) {
     return;
   }
+
+  if (args.length === 0) {
+    message.reply('format:  !feature <enable/disable> <emotes/bully/8ball/love>');
+  }
+
+  const options = ['enable', 'disable'];
+  const flags = ['emotes', 'bully', '8ball', 'love'];
 
   const option = args.shift().toLowerCase();
   const flag = args.shift().toLowerCase();

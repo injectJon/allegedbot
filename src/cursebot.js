@@ -1,4 +1,3 @@
-
 import { Client } from 'cursejs';
 import Promise from 'bluebird';
 import _ from 'lodash';
@@ -6,7 +5,6 @@ import mongoose from 'mongoose';
 
 import { emoteHandler, commandHandler } from './handlers';
 import { options } from './config';
-
 import { Server } from './model';
 
 const request = Promise.promisifyAll(require('request'));
@@ -44,18 +42,23 @@ const blacklist = [];
 
 const app = new Client();
 
-function lookupServerId(message) {
-  if (!app.channels[message.conversation.ID]) {
+export function lookupServerId(message) {
+  if (!app.channels.has(message.conversation.ID)) {
     return undefined;
   }
-  return app.channels[message.conversation.ID].server.ID;
+  return app.channels.get(message.conversation.ID).server.ID;
+}
+
+export function recentUserList(message) {
+  // TODO: Populate list of recent server members
 }
 
 function handleServerMessage(handler) {
   return (message) => {
-    // console.log(`[${message.senderID}]  ${message.senderName} : ${message.content}`);
+    console.log(`[${message.senderID}]  ${message.senderName}: ${message.content}`);
 
     const serverId = lookupServerId(message);
+    // TODO: Integrate private messaging
     if (!serverId) {
       console.log('Private Message');
       return; // Message is not to a server, ignore.
@@ -67,6 +70,7 @@ function handleServerMessage(handler) {
   };
 }
 
+// On message_received/message_edited functions
 app.on('message_received', handleServerMessage(context => {
   emoteHandler(context);
   commandHandler(context);
@@ -92,7 +96,6 @@ function downloadJson(url) {
 }
 
 function isEmoteAllowed(emote) {
-  // FIXTHIS: The new filter function is broken.
   const isTooShort = emote.length < 4;
   const isBlacklisted = blacklist.includes(emote);
   const isWhitelisted = emoteWhitelist.includes(emote);
@@ -103,7 +106,7 @@ function isEmoteAllowed(emote) {
 // ------- TWITCH EMOTES ---------------
 function loadTwitchEmoteData(data) {
   _.forEach(data.images, (emote, id) => {
-    if (isEmoteAllowed(emote)) {
+    if (isEmoteAllowed(emote.code)) {
       emotes[emote.code] = {
         code: emote.code,
         url: TWITCH_URL_TEMPLATE.replace('{image_id}', id),
@@ -115,7 +118,7 @@ function loadTwitchEmoteData(data) {
 // ------- BTTV Global Emotes-----------
 function loadBTTVGEmoteData(data) {
   _.forEach(data.emotes, (emote) => {
-    if (isEmoteAllowed(emote)) {
+    if (isEmoteAllowed(emote.code)) {
       emotes[emote.code] = {
         code: emote.code,
         url: BTTV_URL_TEMPLATE.replace('{image_id}', emote.id),
@@ -155,6 +158,7 @@ Promise
     loadBTTVUEmoteData(props.bttvEmotes);
 
     connectToDB();
+    isEmoteAllowed(emotes);
 
     app.run(options.username, options.password);
   });

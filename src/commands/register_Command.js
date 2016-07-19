@@ -1,10 +1,10 @@
 import { Server } from '../model';
+import { isGod } from '../utils';
 
 export function registerCommand(context) {
   const { message, server, serverId } = context;
 
-  const isGod = '23807572';
-  if (!message.senderID === isGod) {
+  if (!isGod(message)) {
     return;
   }
 

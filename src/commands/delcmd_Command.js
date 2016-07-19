@@ -1,15 +1,20 @@
 import { CustomCommand } from '../model';
+import { isAdmin } from '../utils';
 
 export function delcmdCommand(context) {
   const { message, server, args } = context;
 
   if (!server) return;
 
-  if (server.admins.indexOf(message.senderID) < 0) {
+  if (!isAdmin(server, message)) {
     return;
   }
 
-  if (!args.length === 1) {
+  if (args.length === 0) {
+    message.reply('format:  !delcmd <code>');
+  }
+
+  if (args.length > 1) {
     message.reply(`Unknown command '${args[0]}'`);
     return;
   }
