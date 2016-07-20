@@ -1,4 +1,6 @@
 {
+  "author": "injectJon",
+  "name": "cursebotjs",
   "scripts": {
     "start": "node bin/bot.js"
   },
