@@ -1,6 +1,7 @@
 {
   "author": "injectJon",
   "name": "cursebotjs",
+  "version": "1.0.0"
   "scripts": {
     "start": "node bin/bot.js"
   },
