@@ -52,11 +52,6 @@ export function addcmdCommand(context) {
         serverId: server.serverId,
       });
 
-      // Protects against infinite bot spam loop
-      if (newCustomCommand.response.startsWith('!')) {
-        newCustomCommand.response = response.substring(1);
-      }
-
       return newCustomCommand.save()
         .then(() => {
           message.reply('Command created successfully.');

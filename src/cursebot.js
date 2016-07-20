@@ -49,10 +49,6 @@ export function lookupServerId(message) {
   return app.channels.get(message.conversation.ID).server.ID;
 }
 
-export function recentUserList(message) {
-  // TODO: Populate list of recent server members
-}
-
 function handleServerMessage(handler) {
   return (message) => {
     console.log(`[${message.senderID}]  ${message.senderName}: ${message.content}`);
@@ -65,7 +61,7 @@ function handleServerMessage(handler) {
     }
 
     Server.findByServerId(serverId)
-      .then(server => handler({ message, emotes, server, serverId }))
+      .then(server => handler({ message, emotes, server, serverId, app }))
       .catch(err => console.log(`Unknown Error: ${err}`));
   };
 }

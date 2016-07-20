@@ -10,6 +10,7 @@ import { addemoteCommand } from './addemote_Command';
 import { delemoteCommand } from './delemote_Command';
 import { cmdlistCommand } from './cmdlist_Command';
 import { emotelistCommand } from './emotelist_Command';
+import { roleCommand } from './role_Command';
 
 import { findRandomUser, includeMessageSender } from './tools';
 
@@ -61,6 +62,10 @@ export const internalCommands = [
   {
     command: 'emotelist',
     handler: emotelistCommand,
+  },
+  {
+    command: 'role',
+    handler: roleCommand,
   },
 ];
 

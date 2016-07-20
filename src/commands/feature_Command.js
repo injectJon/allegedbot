@@ -40,9 +40,10 @@ export function featureCommand(context) {
   server.save()
     .then(() => {
       message.reply(`The ${flag} feature has been ${option}d.`);
+      return;
     })
     .catch(err => {
       console.log(`Unable to save server ${err}`);
-      message.reply('Unable to modify features at this time, please try again later.');
+      return message.reply('Unable to modify features at this time, please try again later.');
     });
 }

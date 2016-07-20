@@ -1,6 +1,11 @@
 
 export function loveCommand(context) {
-  const { message, args } = context;
+  const { message, server, args } = context;
+
+  if (!server || !server.love) {
+    console.log('love command disabled for server');
+    return;
+  }
 
   const content = args.join(' ');
 

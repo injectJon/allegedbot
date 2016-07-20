@@ -2,14 +2,18 @@ import { internalCommands, commandTools } from '../commands';
 import { CustomCommand } from '../model';
 
 export function commandHandler(context) {
-  const { message, server } = context;
+  const { message, server, app } = context;
 
   if (!message.content.startsWith('!')) {
     return;
   }
 
+  if (message.senderID === app.clientID) {
+    return;
+  }
+
   const parts = message.content.substring(1).split(/\s+/);
-  const commandStr = parts[0];  // removed '.toLowerCase' because it prevented people's cmds from working.
+  const commandStr = parts[0];
 
   context.args = parts;
   context.command = context.args.shift();
@@ -21,6 +25,7 @@ export function commandHandler(context) {
     commandDef.handler(context);
     return;
   }
+
   // check for custom commands
   if (server) {
     CustomCommand.findByCode(server.serverId, commandStr)
@@ -34,8 +39,7 @@ export function commandHandler(context) {
           let newResponse = [];
           commandTools.find(tool => {
             if (complexResponse.indexOf(tool.code) !== -1) {
-              newResponse = tool.handler(complexResponse, message);
-              console.log(`here1 ${newResponse}`);
+              newResponse = tool.handler(complexResponse, context);
             }
           });
 

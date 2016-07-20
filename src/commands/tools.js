@@ -1,6 +1,7 @@
-import { recentUserList } from '../cursebot';
+// import { serverUsersList } from '../utils';
 
-export function includeMessageSender(words, message) {
+export function includeMessageSender(words, context) {
+  const { message } = context;
   const results = [];
 
   for (let i = 0; i < words.length; i++) {
@@ -14,21 +15,38 @@ export function includeMessageSender(words, message) {
   return results;
 }
 
-export function findRandomUser(words, message) {
-  // FIX: BROKEN - SEE 'recentUserList'
-  const results = [];
-  // let users = [];
+export function findRandomUser(words, context) {
+  // const { serverId, app } = context;
 
-  for (let i = 0; i < words.length; i++) {
-    // if (words[i] === '{@randomuser}') {
-    //   users = recentUserList(message);
-    //   console.log(users);
+  // const results = [];
+  // const users = [];
 
-    //   const roll = Math.floor(Math.random() * users.length);
-    //   results.push(users[roll]);
-    // }
+  // words.forEach(word => {
+  //   if (word !== '{@randomuser}') {
+  //     results.push(word);
+  //   } else {
+  //     const myServer = app.servers.get(serverId);
+  //     let slowmode = true;
 
-    results.push(words[i]);
-  }
-  return results;
+  //     myServer.everyServerMembers((err, user, done) => {
+  //       if (!err) {
+  //         if (done) {
+  //           slowmode = false;
+  //           return false;
+  //         }
+
+  //         users.push(user._username);
+  //         return true;
+  //       }
+  //     });
+
+  //     if (!slowmode) {
+  //       console.log(users.length);
+  //       const roll = Math.floor(Math.random() * users.length);
+  //       results.push(users[roll]);
+  //     }
+  //   }
+  // });
+
+  // return results;
 }
