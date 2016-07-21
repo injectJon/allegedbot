@@ -55,13 +55,13 @@ export function editcmdCommand(context) {
 
       internalEmoteHandler(context, content, (response) => {
         cc.response = response;
-      });
 
-      // Save edited command
-      return cc.save()
-        .then(() => {
-          message.reply('The command was updated successfully');
-        });
+        // Save edited command
+        return cc.save()
+          .then(() => {
+            message.reply('The command was updated successfully');
+          });
+      });
     })
     .catch(err => {
       console.log(`Error while creating custom command: ${err}`);
