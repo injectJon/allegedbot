@@ -12,7 +12,9 @@ const request = Promise.promisifyAll(require('request'));
 // Initiate mongodb connection
 function connectToDB() {
   console.log('Connecting to Database...');
-  mongoose.connect('mongodb://localhost:27017/cursebot');
+
+  mongoose.connect(`mongodb://localhost:27017/${options.dbname}`);
+  console.log(`Success! Now connected to database: ${options.dbname}`);
 
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'connection error:'));
@@ -51,7 +53,7 @@ export function lookupServerId(message) {
 
 function handleServerMessage(handler) {
   return (message) => {
-    // console.log(`[${message.senderID}]  ${message.senderName}: ${message.content}`);
+    console.log(`[${message.senderID}]  ${message.senderName}: ${message.content}`);
 
     const serverId = lookupServerId(message);
     // TODO: Integrate private messaging

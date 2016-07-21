@@ -13,24 +13,32 @@ export function delcmdCommand(context) {
   if (args.length === 0) {
     message.reply('format:  !delcmd <code>');
   }
+  let removed;
+  let counter = 0;
+  args.forEach(code => {
+    CustomCommand.findOneAndRemove({ serverId: server.serverId, code })
+      .then(cc => {
+        if (cc) {
+          counter++;
+        } else {
+          message.reply(`The command '${code}' doesn't exist.`);
+          return;
+        }
 
-  if (args.length > 1) {
-    message.reply(`Unknown command '${args[0]}'`);
-    return;
-  }
+        if (args.length === 1) {
+          message.reply(`The command '${code}' was successfully deleted.`);
+          return;
+        }
 
-  const code = args.shift();
-
-  CustomCommand.findOneAndRemove({ serverId: server.serverId, code })
-    .then(cc => {
-      if (cc) {
-        message.reply(`The custom command '${code}' was successfully removed.`);
-      } else {
-        message.reply(`The custom command '${code}' doesn't exist.`);
-      }
-    })
-    .catch(err => {
-      console.log(`Unable to delete custom command ${err}`);
-      message.reply('Unable to delete command at this time, please try again later.');
-    });
+        if (counter === args.length) {
+          removed = args.join("', '");
+          message.reply(`The commands '${removed}' were successfully deleted.`);
+          return;
+        }
+      })
+      .catch(err => {
+        console.log(`Unable to delete custom command ${err}`);
+        message.reply('Unable to delete command at this time, please try again later.');
+      });
+  });
 }

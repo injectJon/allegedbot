@@ -1,6 +1,7 @@
 export const options = {
-  username: 'emoteBotDev',
+  username: 'emoteBot',
   password: 'SheepFarmer69',
+  dbname: 'cursebot',
 };
 
 export const eightBallMessages = [

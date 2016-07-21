@@ -23,8 +23,8 @@ export function addemoteCommand(context) {
   const url = args.shift();
   if (!url.startsWith('https://cdn.betterttv.net/emote/')) {
     return message.reply('At the moment, we have chosen to only allow for the' +
-      '\naddition of emotes from BTTV. Feel free to pass along the names of domains' +
-      '\nyou\'d like to see added to the whitelist in the future. :)');
+      'addition of emotes from BTTV. Feel free to pass along the names of domains' +
+      'you\'d like to see added to the whitelist in the future. :thumbsup_tone3:');
   }
 
   CustomEmote.findByCode(server.serverId, code)

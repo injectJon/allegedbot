@@ -15,14 +15,20 @@ export function addcmdCommand(context) {
   if (args.length === 0) {
     message.reply('format:  !addcmd <code> <contents>' +
       '\noptions available within contents:  {messagesender}');
+    return;
   }
 
-  if (args.length < 2 && args.length > 0) {
+  if (args.length === 1) {
     message.reply('Try harder..');
     return;
   }
 
   const code = args.shift();
+  const regex = /^([a-zA-Z0-9])+$/;
+  if (!regex.test(code)) {
+    message.reply('The command code is limited to letters and numbers.');
+    return;
+  }
 
   CustomCommand.findByCode(server.serverId, code)
     .then(cc => {
