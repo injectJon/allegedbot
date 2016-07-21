@@ -22,17 +22,23 @@ function editErrorHandler(message, content) {
   setTimeout(() => {
     message.editContent(content, (err) => {
       if (err) {
+        console.log('Message-edit error handling failed.');
         return false;
       }
+      console.log('Message-edit error handling was a success!');
       return false;
     });
   }, 1000);
 }
 
 export function emoteHandler(context) {
-  const { message, emotes, server } = context;
+  const { message, emotes, server, app } = context;
 
   if (!server || !server.emotes) {
+    return;
+  }
+
+  if (message.senderID === app.clientID) {
     return;
   }
 
@@ -49,7 +55,7 @@ export function emoteHandler(context) {
       let content = message.content;
 
       results.forEach(result => {
-        content = content.replace(/(?!\s+)\S+/, (match) => {
+        content = content.replace(/(?!\s+)\S+/g, (match) => {
           if (match === result.code) {
             return result.url;
           }

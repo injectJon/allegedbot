@@ -7,7 +7,8 @@ export function bullyCommand(context) {
   }
 
   if (args.length < 1) {
-    message.reply(`*I, your bot overlord,* have bullied ${message.senderName} with ~GREAT~ success! quinJudy`);
+    message.reply(`*I, your bot overlord,* have bullied ${message.senderName} ` +
+      'with ~GREAT~ success! https://static-cdn.jtvnw.net/emoticons/v1/68036/1.0'); // quinJudy
     return;
   }
 
@@ -15,8 +16,10 @@ export function bullyCommand(context) {
 
   const odds = Math.random();
   if (odds >= 0.65) {
-    message.reply(`*${message.senderName}* bullied ${target} with ~GREAT~ success!  quinJudy`);
+    message.reply(`*${message.senderName}* bullied ${target} with ~GREAT~ success! ` +
+      'https://static-cdn.jtvnw.net/emoticons/v1/68036/1.0'); // quinJudy
   } else {
-    message.reply(`*${message.senderName}* failed to bully ${target} . What a ~PLEB!~  alkXD`);
+    message.reply(`*${message.senderName}* failed to bully ${target} . What a ~PLEB!~ ` +
+      'https://static-cdn.jtvnw.net/emoticons/v1/102146/1.0');  // alkXD
   }
 }

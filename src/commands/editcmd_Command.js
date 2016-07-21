@@ -1,5 +1,8 @@
 import { CustomCommand } from '../model';
 import { isAdmin } from '../utils';
+import { commandTools } from './index';
+import { internalEmoteHandler } from '../handlers';
+
 
 export function editcmdCommand(context) {
   const { message, server, args } = context;
@@ -21,7 +24,6 @@ export function editcmdCommand(context) {
   }
 
   const code = args.shift();
-  const response = args.join(' ');
 
   CustomCommand.findByCode(server.serverId, code)
     .then(cc => {
@@ -29,8 +31,33 @@ export function editcmdCommand(context) {
         return message.reply(`The custom command '${code}' doesn't exist.`);
       }
 
-      cc.response = response;
+      // Command complexity check
+      let complex = false;
+      const tools = [];
 
+      args.forEach(word => {
+        commandTools.find(tool => {
+          if (tool.code === word) {
+            complex = true;
+            tools.push(tool.code);
+          }
+        });
+      });
+
+      cc.complex = complex;
+
+      if (complex === true) {
+        cc.tools = tools;
+      }
+
+      // Internal emote replacement
+      const content = args.join(' ');
+
+      internalEmoteHandler(context, content, (response) => {
+        cc.response = response;
+      });
+
+      // Save edited command
       return cc.save()
         .then(() => {
           message.reply('The command was updated successfully');

@@ -51,7 +51,7 @@ export function lookupServerId(message) {
 
 function handleServerMessage(handler) {
   return (message) => {
-    console.log(`[${message.senderID}]  ${message.senderName}: ${message.content}`);
+    // console.log(`[${message.senderID}]  ${message.senderName}: ${message.content}`);
 
     const serverId = lookupServerId(message);
     // TODO: Integrate private messaging

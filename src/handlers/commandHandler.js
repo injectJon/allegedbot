@@ -43,8 +43,8 @@ export function commandHandler(context) {
             }
           });
 
-          const response = newResponse.join(' ');
-          message.reply(response);
+          newResponse = newResponse.join(' ');
+          message.reply(newResponse);
         }
       })
       .catch(err => {

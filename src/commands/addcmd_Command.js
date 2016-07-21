@@ -1,6 +1,7 @@
 import { CustomCommand } from '../model';
 import { isAdmin } from '../utils';
 import { commandTools } from './index';
+import { internalEmoteHandler } from '../handlers';
 
 export function addcmdCommand(context) {
   const { message, server, args } = context;
@@ -21,7 +22,7 @@ export function addcmdCommand(context) {
     return;
   }
 
-  const code = args[0];
+  const code = args.shift();
 
   CustomCommand.findByCode(server.serverId, code)
     .then(cc => {
@@ -30,6 +31,7 @@ export function addcmdCommand(context) {
         return undefined;
       }
 
+      // Command complexity check
       let complex = false;
       const tools = [];
 
@@ -42,20 +44,24 @@ export function addcmdCommand(context) {
         });
       });
 
-      const response = args.slice(1).join(' ');
+      // Internal emote replacement
+      const content = args.join(' ');
 
-      const newCustomCommand = new CustomCommand({
-        code,
-        response,
-        complex,
-        tools,
-        serverId: server.serverId,
-      });
-
-      return newCustomCommand.save()
-        .then(() => {
-          message.reply('Command created successfully.');
+      internalEmoteHandler(context, content, (response) => {
+        const newCustomCommand = new CustomCommand({
+          code,
+          response,
+          complex,
+          tools,
+          serverId: server.serverId,
         });
+
+        // Save new command
+        return newCustomCommand.save()
+          .then(() => {
+            message.reply('Command created successfully.');
+          });
+      });
     })
     .catch(err => {
       console.log(`Error while creating custom command: ${err}`);

@@ -10,10 +10,11 @@ export function loveCommand(context) {
   const content = args.join(' ');
 
   if (!content) {
-    message.reply(`There's 0% bleedPurple between Proper Cmd Formatting and ${message.senderName}.`);
+    message.reply(`${message.senderName}, love test formatting: !love <anything>`);
     return;
   }
 
   const odds = Math.round(100 * Math.random());
-  message.reply(`There's ${odds}% bleedPurple between ${content} and ${message.senderName}.`);
+  message.reply(`There's ${odds}% https://static-cdn.jtvnw.net/emoticons/v1/62835/1.0 ` +
+    `between ${content} and ${message.senderName}.`);
 }
