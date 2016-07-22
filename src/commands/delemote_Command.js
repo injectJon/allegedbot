@@ -11,7 +11,8 @@ export function delemoteCommand(context) {
   }
 
   if (args.length === 0) {
-    message.reply('format:  !delemote <code>');
+    message.reply('Delete a user added emote: ```!delemote <code>```' +
+    '\nMultiple emotes may be deleted at the same time.');
   }
 
   if (!args.length === 2 && !args.length === 0) {

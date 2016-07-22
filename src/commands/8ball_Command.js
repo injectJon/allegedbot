@@ -6,7 +6,8 @@ export function eightBallCommand(context) {
   const content = args.join(' ');
   if (!content) {
     message.reply('What do you expect me to say back to that? Try harder... ' +
-      'https://static-cdn.jtvnw.net/emoticons/v1/67953/1.0'); // quinPalm
+      'https://static-cdn.jtvnw.net/emoticons/v1/67953/1.0' + // quinPalm
+      '\nProper formatting: ```!8ball <anything>```');
     return;
   }
 

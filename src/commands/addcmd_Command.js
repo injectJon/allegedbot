@@ -13,8 +13,8 @@ export function addcmdCommand(context) {
   }
 
   if (args.length === 0) {
-    message.reply('format:  !addcmd <code> <contents>' +
-      '\noptions available within contents:  {messagesender}');
+    message.reply('Add a custom command: ```!addcmd <code> <contents>```' +
+      '\noptions available within contents:  ```{messagesender}```');
     return;
   }
 

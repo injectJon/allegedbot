@@ -11,14 +11,18 @@ export function roleCommand(context) {
   }
 
   if (args.length === 0) {
-    message.reply('format:  !role give admin <@user>');
+    message.reply('To check a users role:' +
+      '\n```!role check <@user>```' +
+      '\nTo give/take admin:' +
+      '\n```!role <give/take> admin <@user>```');
+    return;
   }
 
-  if (args.length < 2 && args.length > 0) {
+  if (args.length === 1) {
     message.reply('Try harder...');
     return;
   }
-  const options = ['give', 'take'];
+  const options = ['give', 'take', 'check'];
   const flags = ['admin'];
 
   const option = args.shift();  // option = ['give']  (give/take)
@@ -35,15 +39,32 @@ export function roleCommand(context) {
 
   const userMention = args.shift();  // userMention = ['@12345678:username']
 
-  const user = userMention.split(':', -1).splice(1, 1);  // user = ['@25291228', 'emoteBot']
+  const user = userMention.split(':', -1).splice(1, 1);  // user = ['emoteBot']
 
   const userId = userMention.split(':', 1).toString().substring(1);  // userId = ['12345678']
+
+  if (userId === undefined) {
+    message.reply('You must mention the user, e.g. ```@username```');
+    return;
+  }
+
+  if (option === 'check') {
+    const index = server.admins.indexOf(userId);
+
+    if (index === -1) {
+      message.reply(`User: ${user}\nRole: Member`);
+      return;
+    }
+
+    message.reply(`User: ${user}\nRole: Admin`);
+    return;
+  }
 
   if (flag === 'admin') {
     const index = server.admins.indexOf(userId);
 
     if (option === 'give') {
-      if (index > -1) {
+      if (index !== -1) {
         message.reply('that user is already an admin');
         return;
       }
@@ -51,7 +72,7 @@ export function roleCommand(context) {
       server.admins.push(userId);
     }
 
-    if (index > -1) {
+    if (index !== -1) {
       server.admins.splice(index, 1);
     }
   }

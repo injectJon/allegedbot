@@ -11,7 +11,8 @@ export function addemoteCommand(context) {
   }
 
   if (args.length === 0) {
-    message.reply('format:  !addemote <code> <url>');
+    message.reply('Add a BTTV emote that seems to be missing from the bot\'s list:' +
+    '\n```!addemote <code> <url>```');
   }
 
   if (args.length < 2 && args.length > 0) {

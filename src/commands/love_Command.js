@@ -10,7 +10,8 @@ export function loveCommand(context) {
   const content = args.join(' ');
 
   if (!content) {
-    message.reply(`${message.senderName}, format: !love <anything>`);
+    message.reply(`${message.senderName}, love test format:` +
+    '\n```!love <anything>```');
     return;
   }
 

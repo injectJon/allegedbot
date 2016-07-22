@@ -10,7 +10,9 @@ export function featuresCommand(context) {
   }
 
   if (args.length === 0) {
-    message.reply('format:  !feature <enable/disable> <emotes/bully/8ball/love>');
+    message.reply('Enable/disable bot features for your server:' +
+    '\n```!feature <enable/disable> <emotes/bully/8ball/love>```' +
+    '\nMultiple features may be adjusted at one time');
   }
 
   const options = ['enable', 'disable'];

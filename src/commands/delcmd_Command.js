@@ -11,7 +11,8 @@ export function delcmdCommand(context) {
   }
 
   if (args.length === 0) {
-    message.reply('format:  !delcmd <code>');
+    message.reply('Delete a command: ```!delcmd <code>```' +
+    '\nMultiple commands may be deleted at the same time.');
   }
   let removed;
   let counter = 0;

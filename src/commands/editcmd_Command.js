@@ -14,8 +14,9 @@ export function editcmdCommand(context) {
   }
 
   if (args.length === 0) {
-    message.reply('format:  !editcmd <code> <edited contents>' +
-    '\noptions available within contents:  {messagesender}');
+    message.reply('Edit a command: \n```!editcmd <code> <edited contents>```' +
+    '\nOptions available within contents:' +
+    '\n```{messagesender}``` - replaces itself with the name of the user who sends the command.');
   }
 
   if (args.length < 2 && args.length > 0) {

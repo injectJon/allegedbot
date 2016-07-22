@@ -6,7 +6,7 @@ export function isGod(context) {
 
 export function isAdmin(context) {
   const { message, server } = context;
-  return (isGod(message) || server.admins.indexOf(message.senderID) !== -1);
+  return (isGod(context) || server.admins.indexOf(message.senderID) !== -1);
 }
 
 export function serverUsersList(context) {
