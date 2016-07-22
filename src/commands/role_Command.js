@@ -6,7 +6,7 @@ export function roleCommand(context) {
 
   if (!server) return;
 
-  if (!isGod(message)) {
+  if (!isGod(context)) {
     return;
   }
 

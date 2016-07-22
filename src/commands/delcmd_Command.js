@@ -6,7 +6,7 @@ export function delcmdCommand(context) {
 
   if (!server) return;
 
-  if (!isAdmin(server, message)) {
+  if (!isAdmin(context)) {
     return;
   }
 

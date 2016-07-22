@@ -1,13 +1,15 @@
 import { CustomCommand } from '../model';
 import { internalCommands } from './index';
+import { isAdmin } from '../utils';
 
 export function cmdlistCommand(context) {
-  const { message, server } = context;
+  const { message, server, args } = context;
 
   if (!server) return;
 
-  const clist = [];
-  const ilist = [];
+  const clist = [];   // server specific custom commands
+  const elist = [];  // internal commands for everyone
+  const alist = [];  // internal commands for admin
 
   CustomCommand.find({ serverId: server.serverId })
     .then(cmds => {
@@ -16,12 +18,23 @@ export function cmdlistCommand(context) {
       });
       internalCommands.forEach(icmd => {
         if (icmd.command !== 'register') {
-          ilist.push(icmd.command);
+          if (icmd.access === 'admin') {
+            alist.push(icmd.command);
+          } else {
+            elist.push(icmd.command);
+          }
         }
       });
+
       const cresponse = clist.join(', ');
-      const iresponse = ilist.join(', ');
-      message.reply(`_*Custom Commands:*_ ${cresponse}` +
-        `\n_*Internal Commands:*_ ${iresponse}`);
+      const eresponse = elist.join(', ');
+      const aresponse = alist.join(', ');
+
+      if (args[0] === 'admin' && isAdmin(context)) {
+        message.reply(`_*Admin Commands:*_ ${aresponse}`);
+        return;
+      }
+
+      message.reply(`_*Commands:*_ ${cresponse}, ${eresponse}`);
     });
 }

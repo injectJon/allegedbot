@@ -4,7 +4,7 @@ import { isGod } from '../utils';
 export function registerCommand(context) {
   const { message, server, serverId } = context;
 
-  if (!isGod(message)) {
+  if (!isGod(context)) {
     return;
   }
 

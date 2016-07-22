@@ -1,3 +1,4 @@
+
 export function bullyCommand(context) {
   const { message, server, args } = context;
 
@@ -8,7 +9,8 @@ export function bullyCommand(context) {
 
   if (args.length < 1) {
     message.reply(`*I, your bot overlord,* have bullied ${message.senderName} ` +
-      'with ~GREAT~ success! https://static-cdn.jtvnw.net/emoticons/v1/68036/1.0'); // quinJudy
+      'with ~GREAT~ success! https://static-cdn.jtvnw.net/emoticons/v1/68036/1.0' + // quinJudy
+      '\n\nformat: !bully <anything>');
     return;
   }
 

@@ -13,6 +13,11 @@ export function emotelistCommand(context) {
         list.push(` ${emote.code} (${emote.code})`);
       });
 
+      if (list.length === 0) {
+        message.reply('No custom emotes have been added.');
+        return;
+      }
+
       const response = list.join(', ');
       message.reply(`_*Custom Emotes:*_ ${response}`);
     });

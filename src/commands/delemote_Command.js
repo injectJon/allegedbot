@@ -6,7 +6,7 @@ export function delemoteCommand(context) {
 
   if (!server) return;
 
-  if (!isAdmin(server, message)) {
+  if (!isAdmin(context)) {
     return;
   }
 
@@ -18,7 +18,6 @@ export function delemoteCommand(context) {
     message.reply(`Emote '${args[0]}' does not exist.`);
     return;
   }
-
   const code = args.shift();
 
   CustomEmote.findOneAndRemove({ serverId: server.serverId, code })
