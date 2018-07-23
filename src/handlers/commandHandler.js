@@ -29,7 +29,7 @@ export function commandHandler( message ) {
       if ( cmd.code !== command.code ) return;
 
       if ( !cmd.complex ) {
-        message.reply( cmd.response );
+        message.channel.send( cmd.response );
         return;
       }
 
@@ -42,7 +42,7 @@ export function commandHandler( message ) {
         }
       } );
 
-      message.reply( completedResponse );
+      message.channel.send( completedResponse );
     } );
   }
 }
