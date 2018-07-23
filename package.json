@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "8.3.0"
+  },
   "scripts": {
     "start": "node bin/bot.js"
   },
