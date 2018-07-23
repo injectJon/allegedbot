@@ -4,7 +4,7 @@ import { GUILDS } from '../../globals';
 
 export function delcmdCommand( message ) {
 
-  if (!isAdmin(context)) {
+  if (!isAdmin( message ) ) {
     return;
   }
 

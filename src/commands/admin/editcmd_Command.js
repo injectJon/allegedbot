@@ -6,7 +6,7 @@ import { updateCommand } from '../../utils/apiRequests';
 
 export function editcmdCommand( message ) {
 
-  if (!isAdmin(context)) {
+  if (!isAdmin( message )) {
     return;
   }
 
