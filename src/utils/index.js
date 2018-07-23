@@ -10,6 +10,8 @@ export function isAdmin( message ) {
   const authorRoles = message.member.roles.array();
   const adminRole = authorRoles.map( role => role.name === adminRoleName );
 
+  console.log( adminRole )
+
   return (adminRole.length === 1 ) ? true : false;
 }
 
