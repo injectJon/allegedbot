@@ -1,90 +1,67 @@
 import { bullyCommand } from './bully_Command';
 import { eightBallCommand } from './8ball_Command';
 import { loveCommand } from './love_Command';
-import { emotelistCommand } from './emotelist_Command';
 import { cmdlistCommand } from './cmdlist_Command';
-import { helpCommand } from './help_Command';
-import { featuresCommand } from './features_Command';
-import { addcmdCommand } from './addcmd_Command';
-import { delcmdCommand } from './delcmd_Command';
-import { editcmdCommand } from './editcmd_Command';
-import { addemoteCommand } from './addemote_Command';
-import { delemoteCommand } from './delemote_Command';
-import { roleCommand } from './role_Command';
-import { registerCommand } from './register_Command';
+import { featuresCommand } from './admin/features_Command';
+import { addcmdCommand } from './admin/addcmd_Command';
+import { delcmdCommand } from './admin/delcmd_Command';
+import { editcmdCommand } from './admin/editcmd_Command';
+import { roleCommand } from './admin/role_Command';
+import { shareCommand } from './share_Command';
 
 import { findRandomUser, includeMessageSender } from './tools';
 
 export const internalCommands = [
+  // {
+  //   command: '!bully',
+  //   handler: bullyCommand,
+  //   access: 'everyone',
+  // },
+  // {
+  //   command: '!8ball',
+  //   handler: eightBallCommand,
+  //   access: 'everyone',
+  // },
+  // {
+  //   command: '!love',
+  //   handler: loveCommand,
+  //   access: 'everyone',
+  // },
+  // {
+  //   command: '!cmdlist',
+  //   handler: cmdlistCommand,
+  //   access: 'everyone',
+  // },
+  // {
+  //   command: '!features',
+  //   handler: featuresCommand,
+  //   access: 'admin',
+  // },
   {
-    command: 'bully',
-    handler: bullyCommand,
-    access: 'everyone',
-  },
-  {
-    command: '8ball',
-    handler: eightBallCommand,
-    access: 'everyone',
-  },
-  {
-    command: 'love',
-    handler: loveCommand,
-    access: 'everyone',
-  },
-  {
-    command: 'emotelist',
-    handler: emotelistCommand,
-    access: 'everyone',
-  },
-  {
-    command: 'cmdlist',
-    handler: cmdlistCommand,
-    access: 'everyone',
-  },
-  {
-    command: 'help',
-    handler: helpCommand,
-    access: 'everyone',
-  },
-  {
-    command: 'features',
-    handler: featuresCommand,
-    access: 'admin',
-  },
-  {
-    command: 'addcmd',
+    command: '!addcmd',
     handler: addcmdCommand,
     access: 'admin',
   },
   {
-    command: 'delcmd',
+    command: '!delcmd',
     handler: delcmdCommand,
     access: 'admin',
   },
   {
-    command: 'editcmd',
+    command: '!editcmd',
     handler: editcmdCommand,
     access: 'admin',
   },
+  // {
+  //   command: '!role',
+  //   handler: roleCommand,
+  //   access: 'admin',
+  // },
   {
-    command: 'addemote',
-    handler: addemoteCommand,
-    access: 'admin',
-  },
-  {
-    command: 'delemote',
-    handler: delemoteCommand,
-    access: 'admin',
-  },
-  {
-    command: 'role',
-    handler: roleCommand,
-    access: 'admin',
-  },
-  {
-    command: 'register',
-    handler: registerCommand,
-  },
+    command: '!share',
+    handler: shareCommand,
+    access: 'everyone',
+  }
 ];
 
 export const commandTools = [

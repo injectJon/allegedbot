@@ -1,12 +1,24 @@
+import { GUILDS } from '../globals';
 
 export function isGod(context) {
   const { message } = context;
   return (message.senderID === 23807572);  // User ID for Jon = 23807572
 }
 
-export function isAdmin(context) {
-  const { message, server } = context;
-  return (isGod(context) || server.admins.indexOf(message.senderID) !== -1);
+export function isAdmin( message ) {
+  const authorId = message.author.id;
+  const admins = GUILDS[ message.guild.id ].admins;
+
+  // Is author the guild owner?
+  if ( authorId === message.guild.owner.id ) {
+    return true;
+  }
+
+  for ( const admin of admins ) {
+    if ( authorId === admin ) {
+      return true;
+    }
+  }
 }
 
 export function serverUsersList(context) {
@@ -22,7 +34,7 @@ export function serverUsersList(context) {
   //     slowmode = false;
   //     return false;
   //   }
-
+  //
   //   activeUsers.push(user._username);
   //   return true;
   // });

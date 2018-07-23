@@ -1,5 +1,4 @@
-// import { Server } from '../model';
-import { isGod } from '../utils';
+import { isGod } from '../../utils';
 
 export function roleCommand(context) {
   const { message, server, args } = context;

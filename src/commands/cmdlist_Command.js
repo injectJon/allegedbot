@@ -1,4 +1,3 @@
-import { CustomCommand } from '../model';
 import { internalCommands } from './index';
 import { isAdmin } from '../utils';
 

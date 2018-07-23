@@ -1,4 +1,4 @@
-import { isAdmin } from '../utils';
+import { isAdmin } from '../../utils';
 
 export function featuresCommand(context) {
   const { message, server, args } = context;

@@ -1,52 +1,29 @@
 // import { serverUsersList } from '../utils';
 
-export function includeMessageSender(words, context) {
-  const { message } = context;
-  const results = [];
+// replaces {messagesender} with the senders tag
+export function includeMessageSender(message, commandResponse) {
+  console.log( 'here' )
+  const parts = commandResponse.split( ' ' );
 
-  for (let i = 0; i < words.length; i++) {
-    if (words[i] === '{messagesender}') {
-      results.push(message.senderName);
-    } else {
-      results.push(words[i]);
+  parts.forEach( ( arg, i ) => {
+    if ( arg === '{messagesender}' ) {
+      parts[ i ] = `<@${ message.author.id }>`;
     }
-  }
+  } );
 
-  return results;
+  return parts.join( ' ' );
 }
 
-export function findRandomUser(words, context) {
-  // const { serverId, app } = context;
+// replaces {@randomuser} with a random server channel member tag
+export function findRandomUser( message, commandResponse ) {
+  const parts = commandResponse.split( ' ' );
 
-  // const results = [];
-  // const users = [];
+  parts.forEach( ( arg, i ) => {
+    if ( arg === '{@randomuser}' ) {
+      const members = message.channel.members.array();
+      parts[ i ] = `<@${ members[ Math.floor( Math.random() * members.length ) ].id }>`;
+    }
+  } );
 
-  // words.forEach(word => {
-  //   if (word !== '{@randomuser}') {
-  //     results.push(word);
-  //   } else {
-  //     const myServer = app.servers.get(serverId);
-  //     let slowmode = true;
-
-  //     myServer.everyServerMembers((err, user, done) => {
-  //       if (!err) {
-  //         if (done) {
-  //           slowmode = false;
-  //           return false;
-  //         }
-
-  //         users.push(user._username);
-  //         return true;
-  //       }
-  //     });
-
-  //     if (!slowmode) {
-  //       console.log(users.length);
-  //       const roll = Math.floor(Math.random() * users.length);
-  //       results.push(users[roll]);
-  //     }
-  //   }
-  // });
-
-  // return results;
+  return parts.join( ' ' );
 }

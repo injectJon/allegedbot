@@ -1,54 +1,48 @@
 import { internalCommands, commandTools } from '../commands';
-import { CustomCommand } from '../model';
 
-export function commandHandler(context) {
-  const { message, server, app } = context;
+import { GUILDS } from '../globals';
 
-  if (!message.content.startsWith('!')) {
+export function commandHandler( message ) {
+
+  // Only process commands
+  // if (!message.content.startsWith('!')) {
+  //   return;
+  // }
+
+  const guild = GUILDS[ message.guild.id ];
+  const parts = message.content.split(/\s+/);
+  const command = {
+    code: parts.shift(),
+    args: parts,
+  };
+
+  // Check for internal commands
+  const commandDef = internalCommands.find( cmd => cmd.command === command.code );
+  if ( commandDef ) {
+    commandDef.handler( message );
     return;
   }
 
-  if (message.senderID === app.clientID) {
-    return;
-  }
+  // Check for custom commands
+  if ( guild ) {
+    guild.commands.forEach( cmd => {
+      if ( cmd.code !== command.code ) return;
 
-  const parts = message.content.substring(1).split(/\s+/);
-  const commandStr = parts[0];
+      if ( !cmd.complex ) {
+        message.reply( cmd.response );
+        return;
+      }
 
-  context.args = parts;
-  context.command = context.args.shift();
+      const complexResponse = cmd.response.split(/\s+/);
+      let completedResponse = [];
 
-
-  // check for internal commands
-  const commandDef = internalCommands.find(cmd => cmd.command === commandStr);
-  if (commandDef) {
-    commandDef.handler(context);
-    return;
-  }
-
-  // check for custom commands
-  if (server) {
-    CustomCommand.findByCode(server.serverId, commandStr)
-      .then(customCommand => {
-        if (customCommand) {
-          if (!customCommand.complex) {
-            message.reply(customCommand.response);
-          }
-
-          const complexResponse = customCommand.response.split(/\s+/);
-          let newResponse = [];
-          commandTools.find(tool => {
-            if (complexResponse.indexOf(tool.code) !== -1) {
-              newResponse = tool.handler(complexResponse, context);
-            }
-          });
-
-          newResponse = newResponse.join(' ');
-          message.reply(newResponse);
+      commandTools.find( tool => {
+        if ( complexResponse.indexOf( tool.code ) !== -1 ) {
+          completedResponse = tool.handler( message, cmd.response );
         }
-      })
-      .catch(err => {
-        console.log(`Error while looking up custom commands ${err}`);
-      });
+      } );
+
+      message.reply( completedResponse );
+    } );
   }
 }
