@@ -43,6 +43,15 @@ client.on( 'guildCreate', ( guild ) => {
     .then( updatedGuild => {
       GUILDS[ guild.id ].active = updatedGuild.active;
     } );
+
+  // if bot admin role doesnt exist, create one
+  let roles = guild.roles.array();
+  roles = roles.filter( role => role.name === 'AllegedBot Admin' );
+  if ( roles.length === 0 ) {
+    guild.createRole( { name: 'AllegedBot Admin' } );
+  }
+
+
 } );
 
 client.on( 'guildDelete', ( guild ) => {
