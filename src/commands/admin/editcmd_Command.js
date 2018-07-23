@@ -6,9 +6,9 @@ import { updateCommand } from '../../utils/apiRequests';
 
 export function editcmdCommand( message ) {
 
-  // if (!isAdmin(context)) {
-  //   return;
-  // }
+  if (!isAdmin(context)) {
+    return;
+  }
 
   const parts = message.content.split( ' ' );
   const args = parts.slice( 1 );

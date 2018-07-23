@@ -4,9 +4,9 @@ import { GUILDS } from '../../globals';
 
 export function delcmdCommand( message ) {
 
-  // if (!isAdmin(context)) {
-  //   return;
-  // }
+  if (!isAdmin(context)) {
+    return;
+  }
 
   const parts = message.content.split( /\s+/ );
   const code = parts[ 1 ];

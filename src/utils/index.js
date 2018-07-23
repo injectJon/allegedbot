@@ -6,19 +6,11 @@ export function isGod(context) {
 }
 
 export function isAdmin( message ) {
-  const authorId = message.author.id;
-  const admins = GUILDS[ message.guild.id ].admins;
+  const adminRoleName = 'AllegedBot Admin';
+  const authorRoles = message.member.roles.array();
+  const adminRole = authorRoles.map( role => role.name === adminRoleName );
 
-  // Is author the guild owner?
-  if ( authorId === message.guild.owner.id ) {
-    return true;
-  }
-
-  for ( const admin of admins ) {
-    if ( authorId === admin ) {
-      return true;
-    }
-  }
+  return (adminRole.length === 1 ) ? true : false;
 }
 
 export function serverUsersList(context) {
