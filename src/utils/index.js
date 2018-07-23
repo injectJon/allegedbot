@@ -8,7 +8,7 @@ export function isGod(context) {
 export function isAdmin( message ) {
   const adminRoleName = 'AllegedBot Admin';
   const authorRoles = message.member.roles.array();
-  const adminRole = authorRoles.map( role => role.name === adminRoleName );
+  const adminRole = authorRoles.filter( role => role.name === adminRoleName );
 
   console.log( adminRole )
 
