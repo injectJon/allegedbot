@@ -68,6 +68,8 @@ client.on( 'message', message => {
 
   console.log( `[${ message.guild.name }] ${ message.author.username }: ${ message.content }` );
 
+  if ( message.author.id === client.user.id ) return;
+
   commandHandler( message );
 } );
 
