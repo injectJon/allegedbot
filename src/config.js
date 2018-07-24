@@ -17,7 +17,4 @@ export const eightBallMessages = [
   'My sources say yes',
   'My reply is yes',
   'You cannot rely on it',
-  'Not a chance, ~pleb~ ' +
-  'https://static-cdn.jtvnw.net/emoticons/v1/19865/1.0 ' +  // alkSuper
-  'https://static-cdn.jtvnw.net/emoticons/v1/66240/1.0',    // quinD
 ];

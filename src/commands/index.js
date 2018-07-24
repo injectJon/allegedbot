@@ -12,11 +12,11 @@ import { shareCommand } from './share_Command';
 import { findRandomUser, includeMessageSender } from './tools';
 
 export const internalCommands = [
-  // {
-  //   command: '!bully',
-  //   handler: bullyCommand,
-  //   access: 'everyone',
-  // },
+  {
+    command: '!bully',
+    handler: bullyCommand,
+    access: 'everyone',
+  },
   {
     command: '!8ball',
     handler: eightBallCommand,
