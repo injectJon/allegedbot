@@ -3,12 +3,7 @@ import { isAdmin } from '../utils';
 import PastebinAPI from 'pastebin-js';
 import { GUILDS } from '../globals';
 
-
-const pastebin = new PastebinAPI( {
-  'api_dev_key': process.env.PASTEBIN_API_KEY,
-  'api_user_name': process.env.PASTEBIN_USERNAME,
-  'api_user_password': process.env.PASTEBIN_PASSWORD,
-} );
+const pastebin = new PastebinAPI( process.env.PASTEBIN_API_KEY );
 
 const createPaste = function createPaste( message ) {
   return new Promise( ( resolve, reject ) => {
@@ -20,7 +15,7 @@ const createPaste = function createPaste( message ) {
     const commandList = staticCommands.concat( customCommands );
 
     pastebin
-      .createPaste( commandList.join( '' ), `${ message.guild.name } Command List`, 'text', 0, '1M')
+      .createPaste( commandList.join( '' ), `${ message.guild.name } Command List`, 'text', 3, '1M')
       .then( pasteUrl => resolve( pasteUrl ) )
       .fail( err => {
         console.log( err );
