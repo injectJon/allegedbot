@@ -9,10 +9,12 @@ export function featuresCommand( message ) {
 
   const args = message.content.split( /\s+/ ).slice( 1 );
 
-  if (args.length === 0) {
-    message.reply('Enable/disable bot features for your server:' +
-    '\n```!feature <enable/disable> <bully/8ball/love>```' +
-    '\nMultiple features may be adjusted at one time');
+  if ( args.length < 2 ) {
+    message.reply(
+      'Enable/disable bot features for your server:' +
+      '\n```!feature <enable/disable> <bully/8ball/love>```' +
+      '\nMultiple features may be adjusted at one time'
+    );
   }
 
   const options = [ 'enable', 'disable' ];
