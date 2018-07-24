@@ -15,6 +15,7 @@ export function featuresCommand( message ) {
       '\n```!feature <enable/disable> <bully/8ball/love>```' +
       '\nMultiple features may be adjusted at one time'
     );
+    return;
   }
 
   const options = [ 'enable', 'disable' ];
