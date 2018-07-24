@@ -15,12 +15,12 @@ const createPaste = function createPaste( message ) {
     const rawCommands = GUILDS[ message.guild.id ].commands;
 
     const staticCommands = internalCommands.map( cmd => `${ cmd.command }\n` );
-    const customCommands = rawCommands.map( cmd => `${ cmd.code }  ${ cmd.response }\n` );
+    const customCommands = rawCommands.map( cmd => `${ cmd.code }  :  ${ cmd.response }\n` );
 
     const commandList = staticCommands.concat( customCommands );
 
     pastebin
-      .createPaste( commandList.join( '' ), 'Command List', 'text', 0, '1M')
+      .createPaste( commandList.join( '' ), `${ message.guild.name } Command List`, 'text', 0, '1M')
       .then( pasteUrl => resolve( pasteUrl ) )
       .fail( err => {
         console.log( err );
