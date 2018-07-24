@@ -27,11 +27,11 @@ export const internalCommands = [
   //   handler: loveCommand,
   //   access: 'everyone',
   // },
-  // {
-  //   command: '!cmdlist',
-  //   handler: cmdlistCommand,
-  //   access: 'everyone',
-  // },
+  {
+    command: '!cmdlist',
+    handler: cmdlistCommand,
+    access: 'everyone',
+  },
   // {
   //   command: '!features',
   //   handler: featuresCommand,

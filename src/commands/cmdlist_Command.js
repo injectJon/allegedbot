@@ -1,39 +1,38 @@
 import { internalCommands } from './index';
 import { isAdmin } from '../utils';
+import PastebinAPI from 'pastebin-js';
+import { GUILDS } from '../globals';
 
-export function cmdlistCommand(context) {
-  const { message, server, args } = context;
 
-  if (!server) return;
+const pastebin = new PastebinAPI( {
+  'api_dev_key': process.env.PASTEBIN_API_KEY,
+  'api_user_name': process.env.PASTEBIN_USERNAME,
+  'api_user_password': process.env.PASTEBIN_PASSWORD,
+} );
 
-  const clist = [];   // server specific custom commands
-  const elist = [];  // internal commands for everyone
-  const alist = [];  // internal commands for admin
+const createPaste = function createPaste( message ) {
+  return new Promise( ( resolve, reject ) => {
+    const rawCommands = GUILDS[ message.guild.id ].commands;
 
-  CustomCommand.find({ serverId: server.serverId })
-    .then(cmds => {
-      cmds.forEach(cmd => {
-        clist.push(cmd.code);
-      });
-      internalCommands.forEach(icmd => {
-        if (icmd.command !== 'register') {
-          if (icmd.access === 'admin') {
-            alist.push(icmd.command);
-          } else {
-            elist.push(icmd.command);
-          }
-        }
-      });
+    const staticCommands = internalCommands.map( cmd => `${ cmd.command }\n` );
+    const customCommands = rawCommands.map( cmd => `${ cmd.code }  ${ cmd.response }\n` );
 
-      const cresponse = clist.join(', ');
-      const eresponse = elist.join(', ');
-      const aresponse = alist.join(', ');
+    const commandList = staticCommands.concat( customCommands );
 
-      if (args[0] === 'admin' && isAdmin(context)) {
-        message.reply(`_*Admin Commands:*_ ${aresponse}`);
-        return;
-      }
+    pastebin
+      .createPaste( commandList.join( '' ), 'Command List', 0, '1M')
+      .then( pasteUrl => resolve( pasteUrl ) )
+      .fail( err => {
+        console.log( err );
+        reject();
+      } );
+  } );
+}
 
-      message.reply(`_*Commands:*_ ${cresponse}, ${eresponse}`);
-    });
+export function cmdlistCommand( message ) {
+
+  createPaste( message )
+    .then( pasteUrl => {
+      message.reply( `The updated command list can be found here: ${ pasteUrl }` );
+    } );
 }
