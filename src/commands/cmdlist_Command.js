@@ -3,7 +3,11 @@ import { isAdmin } from '../utils';
 import PastebinAPI from 'pastebin-js';
 import { GUILDS } from '../globals';
 
-const pastebin = new PastebinAPI( process.env.PASTEBIN_API_KEY );
+const pastebin = new PastebinAPI( {
+  'api_dev_key': process.env.PASTEBIN_API_DEV_KEY,
+  'api_user_name': process.env.PASTEBIN_USERNAME,
+  'api_user_password': process.env.PASTEBIN_PASSWORD,
+ } );
 
 const createPaste = function createPaste( message ) {
   return new Promise( ( resolve, reject ) => {

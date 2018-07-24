@@ -31,7 +31,6 @@ export function addcmdCommand( message ) {
   let commandExists = false;
   if ( GUILDS[ message.guild.id ].commands.length > 0 ) {
     commandExists = GUILDS[ message.guild.id ].commands.filter( cmd => cmd.code === command.code );
-    console.log( commandExists );
   }
 
   if ( commandExists.length > 0 ) {
