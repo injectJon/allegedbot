@@ -52,11 +52,6 @@ export const internalCommands = [
     handler: editcmdCommand,
     access: 'admin',
   },
-  // {
-  //   command: '!role',
-  //   handler: roleCommand,
-  //   access: 'admin',
-  // },
   {
     command: '!share',
     handler: shareCommand,
