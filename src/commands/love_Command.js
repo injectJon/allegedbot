@@ -1,21 +1,15 @@
+import { GUILDS } from '../globals';
 
-export function loveCommand(context) {
-  const { message, server, args } = context;
+export function loveCommand( message ) {
+  const guild = GUILDS[ message.guild.id ];
 
-  if (!server || !server.love) {
-    console.log('love command disabled for server');
-    return;
-  }
+  if ( !guild || !guild.love ) return;
 
-  const content = args.join(' ');
+  const content = message.content.split(/\s+/).slice(1).join( ' ' );
 
-  if (!content) {
-    message.reply(`${message.senderName}, love test format:` +
-    '\n```!love <anything>```');
-    return;
-  }
+  if ( !content ) return;
 
-  const odds = Math.round(100 * Math.random());
-  message.reply(`There's ${odds}% https://static-cdn.jtvnw.net/emoticons/v1/62835/1.0 ` +
-    `between ${content} and ${message.senderName}.`);
+  const odds = Math.round( 100 * Math.random() );
+
+  message.channel.send( `There's ${ odds }% :purple_heart: between ${ content } and ${ message.member.nickname || message.author.username }` );
 }

@@ -22,11 +22,11 @@ export const internalCommands = [
   //   handler: eightBallCommand,
   //   access: 'everyone',
   // },
-  // {
-  //   command: '!love',
-  //   handler: loveCommand,
-  //   access: 'everyone',
-  // },
+  {
+    command: '!love',
+    handler: loveCommand,
+    access: 'everyone',
+  },
   {
     command: '!cmdlist',
     handler: cmdlistCommand,

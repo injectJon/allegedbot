@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
 
+// AllegedBot API Requests ------------------------------------------------
+
 export const fetchGuilds = function fetchGuilds() {
   return new Promise( ( resolve, reject ) => {
     fetch( `${ process.env.API_PATH }/guilds` )
