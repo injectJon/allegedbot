@@ -1,51 +1,63 @@
 import { isAdmin } from '../../utils';
+import { GUILDS } from '../../globals';
 
-export function featuresCommand(context) {
-  const { message, server, args } = context;
+export function featuresCommand( message ) {
 
-  if (!server) return;
+  if ( !isAdmin( message ) ) return;
 
-  if (!isAdmin(context)) {
-    return;
-  }
+  const guild = GUILDS[ message.guild.id ];
+
+  const args = message.content.split( /\s+/ ).slice( 1 );
 
   if (args.length === 0) {
     message.reply('Enable/disable bot features for your server:' +
-    '\n```!feature <enable/disable> <emotes/bully/8ball/love>```' +
+    '\n```!feature <enable/disable> <bully/8ball/love>```' +
     '\nMultiple features may be adjusted at one time');
   }
 
-  const options = ['enable', 'disable'];
-  const flags = ['emotes', 'bully', '8ball', 'love'];
+  const options = [ 'enable', 'disable' ];
+  const flags = [ 'bully', '8ball', 'love' ];
 
   const option = args.shift().toLowerCase();
+  const flag = args.shift().toLowerCase();
 
-  if (!options.includes(option)) {
-    message.reply(`Unknown option '${option}'`);
+  if ( !options.includes( option ) ) {
+    message.reply( `Unknown option '${ option }'` );
     return;
   }
 
-  args.forEach(flag => {
-    if (!flags.includes(flag)) {
-      message.reply(`Unknown feature '${flag}'`);
-      return;
-    }
+  if ( !flags.includes( flag ) ) {
+    message.reply( `Unknown feature '${ flag }'` );
+    return;
+  }
 
-    if (flag === '8ball') {
-      const casualSwitch = 'eightball';
-      server[casualSwitch] = (option === 'enable');
-    }
+  const state = ( option === 'enable' );
 
-    server[flag] = (option === 'enable');
-  });
+  if ( flag === '8ball' ) {
+    const modifiedFlag = 'eightball';
 
-  server.save()
-    .then(() => {
-      message.reply(`The feature(s) have been ${option}d.`);
-      return;
-    })
-    .catch(err => {
-      console.log(`Unable to save server ${err}`);
-      return message.reply('Unable to modify features at this time, please try again later.');
-    });
+    updateGuildFeatures( guild, modifiedFlag, state )
+      .then( updatedGuild => {
+        if ( updatedGuild.state !== state ) {
+          message.reply( `Error updating feature state. Try again later.` );
+          return;
+        }
+
+        GUILDS[ message.guild.id ][ modifiedFlag ] = state;
+        message.reply( `Successfully updated feature state.` );
+      } );
+
+    return;
+  }
+
+  updateGuildFeatures( guild, flag, state )
+    .then( updatedGuild => {
+      if ( updatedGuild.state !== state ) {
+        message.reply( `Error updating feature state. Try again later.` );
+        return;
+      }
+
+      GUILDS[ message.guild.id ][ flag ] = state;
+      message.reply( `Successfully updated feature state.` );
+    } );
 }

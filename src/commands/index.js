@@ -32,11 +32,11 @@ export const internalCommands = [
     handler: cmdlistCommand,
     access: 'everyone',
   },
-  // {
-  //   command: '!features',
-  //   handler: featuresCommand,
-  //   access: 'admin',
-  // },
+  {
+    command: '!features',
+    handler: featuresCommand,
+    access: 'admin',
+  },
   {
     command: '!addcmd',
     handler: addcmdCommand,

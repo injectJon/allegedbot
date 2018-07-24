@@ -69,6 +69,32 @@ export const updateGuild = function updateGuild( guild_id, status ) {
   } );
 }
 
+export const updateGuildFeatures = function updateGuildFeatures( guild, feature, state ) {
+  return new Promise( ( resolve, reject ) => {
+    const body = {
+      feature,
+      state,
+    };
+
+    fetch(
+      `${ process.env.API_PATH }/guilds/${ guild.id }/features`,
+      {
+        method: 'PUT',
+        body: JSON.stringify( body ),
+        headers: { 'Content-Type': 'application/json' },
+      }
+    ).then( res => res.json() )
+      .then( body => {
+        if ( !body.success ) {
+          console.log( body )
+          return;
+        }
+
+        resolve( body.updatedGuild );
+      } );
+  } );
+};
+
 export const fetchCommands = function fetchCommands( guild ) {
   return new Promise( ( resolve, reject ) => {
 
