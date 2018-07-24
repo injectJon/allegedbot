@@ -20,7 +20,7 @@ const createPaste = function createPaste( message ) {
     const commandList = staticCommands.concat( customCommands );
 
     pastebin
-      .createPaste( commandList.join( '' ), 'Command List', 0, '1M')
+      .createPaste( commandList.join( '' ), 'Command List', 'text', 0, '1M')
       .then( pasteUrl => resolve( pasteUrl ) )
       .fail( err => {
         console.log( err );
