@@ -6,7 +6,6 @@ import { featuresCommand } from './admin/features_Command';
 import { addcmdCommand } from './admin/addcmd_Command';
 import { delcmdCommand } from './admin/delcmd_Command';
 import { editcmdCommand } from './admin/editcmd_Command';
-import { roleCommand } from './admin/role_Command';
 import { shareCommand } from './share_Command';
 
 import { findRandomUser, includeMessageSender } from './tools';
