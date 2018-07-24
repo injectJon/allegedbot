@@ -1,16 +1,11 @@
 import { eightBallMessages } from '../config';
 
-export function eightBallCommand(context) {
-  const { message, args } = context;
+export function eightBallCommand( message ) {
+  const content = message.content.split(/\s+/).slice(1).join( ' ' );
 
-  const content = args.join(' ');
-  if (!content) {
-    message.reply('What do you expect me to say back to that? Try harder... ' +
-      'https://static-cdn.jtvnw.net/emoticons/v1/67953/1.0' + // quinPalm
-      '\nProper formatting: ```!8ball <anything>```');
-    return;
-  }
+  if ( !content ) return;
 
-  const roll = Math.floor(Math.random() * eightBallMessages.length);
-  message.reply(eightBallMessages[roll]);
+  const roll = Math.floor( Math.random() * eightBallMessages.length );
+
+  message.channel.send( eightBallMessages[ roll ] );
 }

@@ -17,11 +17,11 @@ export const internalCommands = [
   //   handler: bullyCommand,
   //   access: 'everyone',
   // },
-  // {
-  //   command: '!8ball',
-  //   handler: eightBallCommand,
-  //   access: 'everyone',
-  // },
+  {
+    command: '!8ball',
+    handler: eightBallCommand,
+    access: 'everyone',
+  },
   {
     command: '!love',
     handler: loveCommand,
