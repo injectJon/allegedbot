@@ -1,5 +1,6 @@
 import { isAdmin } from '../../utils';
 import { GUILDS } from '../../globals';
+import { updateGuildFeatures } from '../../utils/apiRequests';
 
 export function featuresCommand( message ) {
 
@@ -10,10 +11,14 @@ export function featuresCommand( message ) {
   const args = message.content.split( /\s+/ ).slice( 1 );
 
   if ( args.length < 2 ) {
+    // reply with current state of features
     message.reply(
       'Enable/disable bot features for your server:' +
-      '\n```!feature <enable/disable> <bully/8ball/love>```' +
-      '\nMultiple features may be adjusted at one time'
+      '\n```!features <enable/disable> <bully/8ball/love>```' +
+      '\nCurrent feature states:' +
+      `\n  bully  :  ${ ( guild.bully ) ? 'enabled' : 'disabled' }` +
+      `\n  8ball  :  ${ ( guild.eightball ) ? 'enabled' : 'disabled' }` +
+      `\n  love   :  ${ ( guild.love ) ? 'enabled' : 'disabled' }`
     );
     return;
   }
@@ -41,7 +46,7 @@ export function featuresCommand( message ) {
 
     updateGuildFeatures( guild, modifiedFlag, state )
       .then( updatedGuild => {
-        if ( updatedGuild.state !== state ) {
+        if ( updatedGuild[ modifiedFlag ] !== state ) {
           message.reply( `Error updating feature state. Try again later.` );
           return;
         }
@@ -55,7 +60,7 @@ export function featuresCommand( message ) {
 
   updateGuildFeatures( guild, flag, state )
     .then( updatedGuild => {
-      if ( updatedGuild.state !== state ) {
+      if ( updatedGuild[ flag ] !== state ) {
         message.reply( `Error updating feature state. Try again later.` );
         return;
       }

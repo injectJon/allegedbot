@@ -77,7 +77,7 @@ export const updateGuildFeatures = function updateGuildFeatures( guild, feature,
     };
 
     fetch(
-      `${ process.env.API_PATH }/guilds/${ guild.id }/features`,
+      `${ process.env.API_PATH }/guilds/${ guild._id }/features`,
       {
         method: 'PUT',
         body: JSON.stringify( body ),
