@@ -1,4 +1,3 @@
-import { GUILDS } from '../globals';
 
 export function isAdmin( message ) {
   const adminRoleName = 'AllegedBot Admin';

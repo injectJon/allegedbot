@@ -46,7 +46,8 @@ client.on( 'guildCreate', ( guild ) => {
 
   // if bot admin role doesnt exist, create one
   let roles = guild.roles.array();
-  roles = roles.filter( role => role.name === 'AllegedBot Admin' );
+  const modRoles = 'moderator mod administrator admin';
+  roles = roles.filter( role => modRoles.includes( role.name.toLowerCase() ) || role.name === 'AllegedBot Admin' );
   if ( roles.length === 0 ) {
     guild.createRole( { name: 'AllegedBot Admin' } );
   }
