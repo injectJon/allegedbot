@@ -1,2 +1,2 @@
-worker: node bin/api.js
-worker: node bin/bot.js
+worker: npm start --prefix api
+worker: npm start --prefix bot
