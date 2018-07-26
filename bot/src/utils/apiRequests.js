@@ -9,7 +9,7 @@ export const fetchGuilds = function fetchGuilds() {
       {
         method: 'GET',
         headers: {
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         },
       }
     )
@@ -38,7 +38,7 @@ export const createGuild = function createGuild( guild ) {
         body: JSON.stringify( body ),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         },
       }
     ).then( res => res.json() )
@@ -66,7 +66,7 @@ export const updateGuild = function updateGuild( guild_id, status ) {
         body: JSON.stringify( body ),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         },
       }
     ).then( res => res.json() )
@@ -95,7 +95,7 @@ export const updateGuildFeatures = function updateGuildFeatures( guild, feature,
         body: JSON.stringify( body ),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         },
       }
     ).then( res => res.json() )
@@ -119,7 +119,7 @@ export const fetchCommands = function fetchCommands( guild ) {
       {
         method: 'GET',
         headers: {
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         },
       }
     )
@@ -144,7 +144,7 @@ export const deleteCommand = function deleteCommand( command_id ) {
       {
         method: 'DELETE',
         headers: {
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         }
       }
     ).then( res => res.json() )
@@ -178,7 +178,7 @@ export const createCommand = function createCommand( guild_Id, code, response, c
         body: JSON.stringify( body ),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         },
       }
     ).then( res => res.json() )
@@ -213,7 +213,7 @@ export const updateCommand = function updateCommand( command ) {
         body: JSON.stringify( body ),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${ process.env.API_KEY }`,
+          'Authorization': `Basic ${ process.env.ALLEGEDBOT_API_KEY }`,
         },
       }
     ).then( res => res.json() )

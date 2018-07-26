@@ -1,2 +1,2 @@
 require('babel-register');
-require('../src/discordbot');
+require('../bot/src/discordbot');
