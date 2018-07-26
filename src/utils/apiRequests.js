@@ -4,7 +4,15 @@ import fetch from 'node-fetch';
 
 export const fetchGuilds = function fetchGuilds() {
   return new Promise( ( resolve, reject ) => {
-    fetch( `${ process.env.API_PATH }/guilds` )
+    fetch(
+      `${ process.env.API_PATH }/guilds`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        },
+      }
+    )
       .then( res => res.json() )
       .then( body => {
         if ( !body.success ) {
@@ -106,7 +114,15 @@ export const fetchCommands = function fetchCommands( guild ) {
   return new Promise( ( resolve, reject ) => {
 
     const guild_id = guild._id;
-    fetch( `${ process.env.API_PATH }/${ guild_id }/commands` )
+    fetch(
+      `${ process.env.API_PATH }/${ guild_id }/commands`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        },
+      }
+    )
       .then( res => res.json() )
       .then( body => {
         if ( !body.success ) {
