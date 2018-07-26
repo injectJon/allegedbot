@@ -28,7 +28,11 @@ app.use( ( req, res, next ) => {
 app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( { extended: true } ) );
 
-// Bot client will fetch all registered guilds at startup
+
+app.get( '/', ( req, res ) => {
+  res.redirect( process.env.GITHUB_REPO );
+} );
+
 app.get( '/guilds', ( req, res ) => {
   Guild.find( {}, ( err, guilds ) => {
     if ( err ) {
