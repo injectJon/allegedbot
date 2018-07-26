@@ -19,6 +19,10 @@ app.use( (req, res, next) => {
   // }
 });
 app.use( ( req, res, next ) => {
+  if ( req.method === 'GET' && req.originalUrl === '/' ) {
+    next();
+  }
+
   if ( !req.headers.authorization || !req.headers.authorization.includes( process.env.ALLEGEDBOT_API_KEY ) ) {
     return res.json( { success: false, error: 'Authorization Error' } );
   }
