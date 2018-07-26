@@ -1,2 +1,2 @@
-worker: npm start --prefix api
+web: npm start --prefix api
 worker: npm start --prefix bot
