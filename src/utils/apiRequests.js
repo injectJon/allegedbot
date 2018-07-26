@@ -19,7 +19,6 @@ export const fetchGuilds = function fetchGuilds() {
 export const createGuild = function createGuild( guild ) {
   return new Promise( ( resolve, reject ) => {
     const body = {
-      // apiKey: process.env.API_KEY,
       guildId: guild.id,
       admins: guild.owner.id,
     };
@@ -29,7 +28,10 @@ export const createGuild = function createGuild( guild ) {
       {
         method: 'POST',
         body: JSON.stringify( body ),
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        },
       }
     ).then( res => res.json() )
       .then( body => {
@@ -47,7 +49,6 @@ export const createGuild = function createGuild( guild ) {
 export const updateGuild = function updateGuild( guild_id, status ) {
   return new Promise( ( resolve, reject ) => {
     const body = {
-      // apiKey: process.env.API_KEY,
       status,
     };
     fetch(
@@ -55,7 +56,10 @@ export const updateGuild = function updateGuild( guild_id, status ) {
       {
         method: 'PUT',
         body: JSON.stringify( body ),
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        },
       }
     ).then( res => res.json() )
       .then( body => {
@@ -81,7 +85,10 @@ export const updateGuildFeatures = function updateGuildFeatures( guild, feature,
       {
         method: 'PUT',
         body: JSON.stringify( body ),
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        },
       }
     ).then( res => res.json() )
       .then( body => {
@@ -115,15 +122,14 @@ export const fetchCommands = function fetchCommands( guild ) {
 
 export const deleteCommand = function deleteCommand( command_id ) {
   return new Promise( ( resolve, reject ) => {
-    const body = {
-      // apiKey: process.env.API_KEY,
-    };
+
     fetch(
       `${ process.env.API_PATH }/${ 1234 }/commands/${ command_id }`,
       {
         method: 'DELETE',
-        // body: JSON.stringify( body ),
-        // headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        }
       }
     ).then( res => res.json() )
       .then( body => {
@@ -142,7 +148,6 @@ export const createCommand = function createCommand( guild_Id, code, response, c
   return new Promise( ( resolve, reject ) => {
 
     const body = {
-      // apiKey: process.env.API_KEY,
       guildId: guild_Id,
       code,
       response,
@@ -155,7 +160,10 @@ export const createCommand = function createCommand( guild_Id, code, response, c
       {
         method: 'POST',
         body: JSON.stringify( body ),
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        },
       }
     ).then( res => res.json() )
       .then( body => {
@@ -174,7 +182,6 @@ export const updateCommand = function updateCommand( command ) {
   return new Promise( ( resolve, reject ) => {
 
     const body = {
-      // apiKey: process.env.API_KEY,
       commandId: command._id,
       guildId: command.guildId,
       code: command.code,
@@ -188,7 +195,10 @@ export const updateCommand = function updateCommand( command ) {
       {
         method: 'PUT',
         body: JSON.stringify( body ),
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${ process.env.API_KEY }`,
+        },
       }
     ).then( res => res.json() )
       .then( body => {
