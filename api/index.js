@@ -8,7 +8,7 @@ const mongoose = require( 'mongoose' );
 const Guild = require( './models/Guild' );
 const CustomCommand = require( './models/CustomCommand' );
 
-mongoose.connect( `mongodb://${ process.env.DB_USERNAME }:${ process.env.DB_PASSWORD }@ds147391.mlab.com:47391/${ process.env.DB_NAME }` );
+mongoose.connect( process.env.MONGODB_URI );
 
 // Middleware
 app.use( (req, res, next) => {
