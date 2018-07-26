@@ -1,14 +1,10 @@
 import { GUILDS } from '../globals';
 
-export function isGod(context) {
-  const { message } = context;
-  return (message.senderID === 23807572);  // User ID for Jon = 23807572
-}
-
 export function isAdmin( message ) {
   const adminRoleName = 'AllegedBot Admin';
+  const modRoleNames = 'moderator mod admin administrator '
   const authorRoles = message.member.roles.array();
-  const adminRole = authorRoles.filter( role => role.name === adminRoleName );
+  const adminRole = authorRoles.filter( role => role.name === adminRoleName || modRoleNames.includes( role.name ) );
 
-  return (adminRole.length === 1 ) ? true : false;
+  return (adminRole.length >= 1 ) ? true : false;
 }
