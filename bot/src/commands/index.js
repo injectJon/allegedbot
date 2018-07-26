@@ -7,6 +7,7 @@ import { addcmdCommand } from './admin/addcmd_Command';
 import { delcmdCommand } from './admin/delcmd_Command';
 import { editcmdCommand } from './admin/editcmd_Command';
 import { shareCommand } from './share_Command';
+import { helpCommand } from './help_Command';
 
 import { findRandomUser, includeMessageSender } from './tools';
 
@@ -54,6 +55,11 @@ export const internalCommands = [
   {
     command: '!share',
     handler: shareCommand,
+    access: 'everyone',
+  },
+  {
+    command: '!help',
+    handler: helpCommand,
     access: 'everyone',
   }
 ];
