@@ -29,11 +29,15 @@ export function checkGuilds( guilds ) {
 
     if ( GUILDS[ guild.id ] ) return;
 
-    createGuild( guild )
+    const newGuild = {
+      guildId: guild.id,
+      adminRoles: [],
+    };
+
+    createGuild( newGuild )
       .then( result => {
         GUILDS[ result.guild.guildId ] = result.guild
         GUILDS[ result.guild.guildId ].commands = [];
-        GUILDS[ result.guild.guildId ].adminRoles = [];
         console.log( `${ guild.name } has been added to the database` );
       } );
   } );

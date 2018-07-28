@@ -32,9 +32,9 @@ client.on( 'guildCreate', ( guild ) => {
       GUILDS[ guild.id ] = updatedGuild;
 
       // Message on entering server
-      guild.defaultChannel.send(
-        'Thanks for the invite! The last step for setup is to use the !adminRoles command.'
-      );
+      // guild.defaultChannel.send(
+      //   'Thanks for the invite! The last step for setup is to use the !adminRoles command.'
+      // );
     } );
 } );
 
