@@ -1,6 +1,6 @@
 import { isAdmin } from '../../utils';
 import { GUILDS } from '../../globals';
-import { updateGuildFeatures } from '../../utils/apiRequests';
+import { updateGuild } from '../../utils/apiRequests';
 
 export function featuresCommand( message ) {
 
@@ -44,28 +44,32 @@ export function featuresCommand( message ) {
   if ( flag === '8ball' ) {
     const modifiedFlag = 'eightball';
 
-    updateGuildFeatures( guild, modifiedFlag, state )
+    guild.eightball = state;
+
+    updateGuild( guild )
       .then( updatedGuild => {
         if ( updatedGuild[ modifiedFlag ] !== state ) {
           message.reply( `Error updating feature state. Try again later.` );
           return;
         }
 
-        GUILDS[ message.guild.id ][ modifiedFlag ] = state;
+        GUILDS[ message.guild.id ] = updatedGuild;
         message.reply( `Successfully updated feature state.` );
       } );
 
     return;
   }
 
-  updateGuildFeatures( guild, flag, state )
+  guild[ flag ] = state;
+
+  updateGuild( guild )
     .then( updatedGuild => {
       if ( updatedGuild[ flag ] !== state ) {
         message.reply( `Error updating feature state. Try again later.` );
         return;
       }
 
-      GUILDS[ message.guild.id ][ flag ] = state;
+      GUILDS[ message.guild.id ] = guild;
       message.reply( `Successfully updated feature state.` );
     } );
 }

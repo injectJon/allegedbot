@@ -6,7 +6,7 @@ import { GUILDS } from './globals';
 
 const client = new Discord.Client();
 
-function updateGuilds() {
+function checkGuilds() {
   // All guilds the client is currently handling
   const guilds = client.guilds.array();
 
@@ -28,20 +28,23 @@ client.on( 'ready', () => {
   console.log( 'Loaded commands from database.')
   console.log( `Logged in as ${ client.user.tag }`)
 
-  updateGuilds();
+  checkGuilds();
 
 } );
 
 client.on( 'guildCreate', ( guild ) => {
   console.log( `Joined the ${ guild.name } guild, updating database.` );
   if ( !GUILDS[ guild.id ] ) {
-    updateGuilds();
+    checkGuilds();
     return;
   }
 
-  updateGuild( GUILDS[ guild.id ]._id, true )
+  const newGuild = GUILDS[ guild.id ];
+  newGuild.status = true;
+
+  updateGuild( newGuild )
     .then( updatedGuild => {
-      GUILDS[ guild.id ].active = updatedGuild.active;
+      GUILDS[ guild.id ] = updatedGuild;
     } );
 
   // if bot admin role doesnt exist, create one
@@ -57,9 +60,11 @@ client.on( 'guildCreate', ( guild ) => {
 
 client.on( 'guildDelete', ( guild ) => {
   console.log( `Left the ${ guild.name } guild, updating database.` );
-  updateGuild( GUILDS[ guild.id ]._id, false )
+  const newGuild = GUILDS[ guild.id ];
+  newGuild.status = false;
+  updateGuild( newGuild )
     .then( updatedGuild => {
-      GUILDS[ guild.id ].active = updatedGuild.active;
+      GUILDS[ guild.id ] = updatedGuild;
     } )
 } );
 

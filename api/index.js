@@ -35,6 +35,7 @@ app.get( '/', ( req, res ) => {
   res.redirect( process.env.GITHUB_REPO );
 } );
 
+// Fetch all guilds
 app.get( '/api/guilds', ( req, res ) => {
   Guild.find( {}, ( err, guilds ) => {
     if ( err ) {
@@ -46,6 +47,7 @@ app.get( '/api/guilds', ( req, res ) => {
   } );
 } );
 
+// Create new guild
 app.post( '/api/guilds', ( req, res ) => {
   const guildId = req.body.guildId;
   const admins = req.body.admins;
@@ -63,16 +65,15 @@ app.post( '/api/guilds', ( req, res ) => {
   } );
 } );
 
+// Update guild
 app.put( '/api/guilds/:id', ( req, res ) => {
   const guildId = req.params.id;
-  const status = req.body.status;
+  const guild = req.body.guild;
   const query = { _id: guildId };
 
   Guild.findOneAndUpdate(
     query,
-    {
-      active: status,
-    },
+    guild,
     { new: true },
     ( err, updatedGuild ) => {
       if ( err ) {
@@ -86,31 +87,7 @@ app.put( '/api/guilds/:id', ( req, res ) => {
 
 } );
 
-app.put( '/api/guilds/:id/features', ( req, res ) => {
-  const guildId = req.params.id;
-  const feature = req.body.feature;
-  const state = req.body.state;
-  const query = { _id: guildId };
-
-  const updatedFeature = {};
-  updatedFeature[ feature ] = state;
-
-  Guild.findOneAndUpdate(
-    query,
-    updatedFeature,
-    { new: true },
-    ( err, updatedGuild ) => {
-      if ( err ) {
-        res.json( { success: false, error: err } );
-        return;
-      }
-
-      res.json( { success: true, updatedGuild } );
-    }
-  )
-} );
-
-// Bot client will fetch all commands at startup
+// Fetch all commands for a specific guild
 app.get( '/api/:guild_id/commands', ( req, res ) => {
   const guild_id = req.params.guild_id
 
@@ -128,7 +105,7 @@ app.get( '/api/:guild_id/commands', ( req, res ) => {
     } )
 } );
 
-// Delete a custom command from the db
+// Delete a custom command
 app.delete( '/api/:guild_id/commands/:id', ( req, res ) => {
   const command_id = req.params.id;
 
@@ -143,7 +120,7 @@ app.delete( '/api/:guild_id/commands/:id', ( req, res ) => {
 
 } );
 
-// Create new custom command in the db
+// Create new custom command
 app.post( '/api/:guild_id/commands', ( req, res ) => {
   const guild_id = req.body.guildId;
   const code = req.body.code;
@@ -166,7 +143,7 @@ app.post( '/api/:guild_id/commands', ( req, res ) => {
   } );
 } );
 
-// Update custom command in the db
+// Update custom command
 app.put( '/api/:guild_id/commands/:id', ( req, res ) => {
 
   const command_id = req.params.id;
