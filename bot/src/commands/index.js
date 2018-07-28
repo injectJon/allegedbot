@@ -8,6 +8,7 @@ import { delcmdCommand } from './admin/delcmd_Command';
 import { editcmdCommand } from './admin/editcmd_Command';
 import { shareCommand } from './share_Command';
 import { helpCommand } from './help_Command';
+import { adminRolesCommand } from './admin/adminroles_Command';
 
 import { findRandomUser, includeMessageSender } from './tools';
 
@@ -61,7 +62,12 @@ export const internalCommands = [
     command: '!help',
     handler: helpCommand,
     access: 'everyone',
-  }
+  },
+  {
+    command: '!adminroles',
+    handler: adminRolesCommand,
+    access: 'admin',
+  },
 ];
 
 export const commandTools = [
