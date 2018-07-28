@@ -40,7 +40,7 @@ client.on( 'guildCreate', ( guild ) => {
   }
 
   const newGuild = GUILDS[ guild.id ];
-  newGuild.status = true;
+  newGuild.active = true;
 
   updateGuild( newGuild )
     .then( updatedGuild => {
@@ -60,8 +60,10 @@ client.on( 'guildCreate', ( guild ) => {
 
 client.on( 'guildDelete', ( guild ) => {
   console.log( `Left the ${ guild.name } guild, updating database.` );
+
   const newGuild = GUILDS[ guild.id ];
-  newGuild.status = false;
+  newGuild.active = false;
+
   updateGuild( newGuild )
     .then( updatedGuild => {
       GUILDS[ guild.id ] = updatedGuild;
