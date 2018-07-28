@@ -69,7 +69,7 @@ export function featuresCommand( message ) {
         return;
       }
 
-      GUILDS[ message.guild.id ] = guild;
+      GUILDS[ message.guild.id ] = updatedGuild;
       message.reply( `Successfully updated feature state.` );
     } );
 }

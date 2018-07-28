@@ -7,6 +7,7 @@ import { GUILDS } from './globals';
 
 const client = new Discord.Client();
 
+// When the client has connected to discord
 client.on( 'ready', () => {
   console.log( 'Loaded commands from database.')
   console.log( `Logged in as ${ client.user.tag }`)
@@ -15,6 +16,7 @@ client.on( 'ready', () => {
 
 } );
 
+// When the bot has connected to a guild
 client.on( 'guildCreate', ( guild ) => {
   console.log( `Joined the ${ guild.name } guild, updating database.` );
   if ( !GUILDS[ guild.id ] ) {
@@ -28,24 +30,21 @@ client.on( 'guildCreate', ( guild ) => {
   updateGuild( newGuild )
     .then( updatedGuild => {
       GUILDS[ guild.id ] = updatedGuild;
+
+      // Message on entering server
+      guild.defaultChannel.send(
+        'Thanks for the invite! The last step for setup is to use the !adminRoles command.'
+      );
     } );
-
-  // if bot admin role doesnt exist, create one
-  let roles = guild.roles.array();
-  const modRoles = 'moderator mod administrator admin';
-  roles = roles.filter( role => modRoles.includes( role.name.toLowerCase() ) || role.name === 'AllegedBot Admin' );
-  if ( roles.length === 0 ) {
-    guild.createRole( { name: 'AllegedBot Admin' } );
-  }
-
-
 } );
 
+// When the bot has left a guild
 client.on( 'guildDelete', ( guild ) => {
   console.log( `Left the ${ guild.name } guild, updating database.` );
 
   const newGuild = GUILDS[ guild.id ];
   newGuild.active = false;
+  newGuild.adminRoles = new Array();
 
   updateGuild( newGuild )
     .then( updatedGuild => {
@@ -53,6 +52,7 @@ client.on( 'guildDelete', ( guild ) => {
     } )
 } );
 
+// When the bot hears a message in a guild
 client.on( 'message', message => {
 
   if ( !message.guild.available ) return;

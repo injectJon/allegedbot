@@ -1,10 +1,24 @@
 import { GUILDS } from '../globals';
 
 export function isAdmin( message ) {
-  const adminRoleName = 'AllegedBot Admin';
-  const modRoleNames = 'moderator mod admin administrator '
+  // If guild doesn't have assigned admin roles, all users are admin
+  if ( GUILDS[ message.guild.id ].adminRoles.length < 1 ) {
+    return true;
+  }
+
+  const guildRoles = GUILDS[ message.guild.id ].adminRoles;
   const authorRoles = message.member.roles.array();
-  const adminRole = authorRoles.filter( role => role.name === adminRoleName || modRoleNames.includes( role.name.toLowerCase() ) );
+  const adminRoles = authorRoles.map( r => {
+    let adminRole;
+
+    guildRoles.forEach( gr => {
+      if ( gr.name === r.name ) {
+        adminRole = r
+      }
+    } )
+
+    return adminRole;
+  })
 
   return (adminRole.length >= 1 ) ? true : false;
 }
@@ -19,6 +33,7 @@ export function checkGuilds( guilds ) {
       .then( result => {
         GUILDS[ result.guild.guildId ] = result.guild
         GUILDS[ result.guild.guildId ].commands = [];
+        GUILDS[ result.guild.guildId ].adminRoles = [];
         console.log( `${ guild.name } has been added to the database` );
       } );
   } );

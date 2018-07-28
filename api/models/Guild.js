@@ -13,12 +13,9 @@ const GuildSchema = new Schema(
       required: true,
       unique: true,
     },
-    admins: [{
-      type: Number,
+    adminRoles: [{
+      type: Object,
       required: true,
-    }],
-    moderators: [{
-      type: String,
     }],
     bully: {
       type: Boolean,
