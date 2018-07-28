@@ -83,10 +83,8 @@ export const updateGuild = function updateGuild( guild ) {
 
 export const fetchCommands = function fetchCommands( guild ) {
   return new Promise( ( resolve, reject ) => {
-
-    const guild_id = guild._id;
     fetch(
-      `${ process.env.API_PATH }/api/${ guild_id }/commands`,
+      `${ process.env.API_PATH }/api/guilds/${ guild._id }/commands`,
       {
         method: 'GET',
         headers: {
@@ -111,7 +109,7 @@ export const deleteCommand = function deleteCommand( command_id ) {
   return new Promise( ( resolve, reject ) => {
 
     fetch(
-      `${ process.env.API_PATH }/api/${ 1234 }/commands/${ command_id }`,
+      `${ process.env.API_PATH }/api/guilds/${ 1234 }/commands/${ command_id }`,
       {
         method: 'DELETE',
         headers: {
@@ -143,7 +141,7 @@ export const createCommand = function createCommand( guild_Id, code, response, c
     };
 
     fetch(
-      `${ process.env.API_PATH }/api/${ guild_Id }/commands`,
+      `${ process.env.API_PATH }/api/guilds/${ guild_Id }/commands`,
       {
         method: 'POST',
         body: JSON.stringify( body ),
@@ -178,7 +176,7 @@ export const updateCommand = function updateCommand( command ) {
     };
 
     fetch(
-      `${ process.env.API_PATH }/api/1234/commands/${ body.commandId }`,
+      `${ process.env.API_PATH }/api/guilds/${ 1234 }/commands/${ body.commandId }`,
       {
         method: 'PUT',
         body: JSON.stringify( body ),

@@ -1,41 +1,24 @@
 require( 'dotenv' ).config();
 import Discord from 'discord.js'
 import { fetchGuilds, fetchCommands, createGuild, updateGuild } from './utils/apiRequests';
+import { checkGuilds } from './utils';
 import { commandHandler } from './handlers';
 import { GUILDS } from './globals';
 
 const client = new Discord.Client();
 
-function checkGuilds() {
-  // All guilds the client is currently handling
-  const guilds = client.guilds.array();
-
-  // If a guild is missing from the database, add it
-  guilds.forEach( guild => {
-
-    if ( GUILDS[ guild.id ] ) return;
-
-    createGuild( guild )
-      .then( result => {
-        GUILDS[ result.guild.guildId ] = result.guild
-        GUILDS[ result.guild.guildId ].commands = [];
-        console.log( `${ guild.name } has been added to the database` );
-      } );
-  } );
-}
-
 client.on( 'ready', () => {
   console.log( 'Loaded commands from database.')
   console.log( `Logged in as ${ client.user.tag }`)
 
-  checkGuilds();
+  checkGuilds( client.guilds.array() );
 
 } );
 
 client.on( 'guildCreate', ( guild ) => {
   console.log( `Joined the ${ guild.name } guild, updating database.` );
   if ( !GUILDS[ guild.id ] ) {
-    checkGuilds();
+    checkGuilds( client.guilds.array() );
     return;
   }
 

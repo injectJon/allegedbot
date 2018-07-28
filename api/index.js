@@ -88,7 +88,7 @@ app.put( '/api/guilds/:id', ( req, res ) => {
 } );
 
 // Fetch all commands for a specific guild
-app.get( '/api/:guild_id/commands', ( req, res ) => {
+app.get( '/api/guilds/:guild_id/commands', ( req, res ) => {
   const guild_id = req.params.guild_id
 
   // get list of commands for server
@@ -106,7 +106,7 @@ app.get( '/api/:guild_id/commands', ( req, res ) => {
 } );
 
 // Delete a custom command
-app.delete( '/api/:guild_id/commands/:id', ( req, res ) => {
+app.delete( '/api/guilds/:guild_id/commands/:id', ( req, res ) => {
   const command_id = req.params.id;
 
   CustomCommand.deleteOne( { '_id': command_id }, ( err ) => {
@@ -121,7 +121,7 @@ app.delete( '/api/:guild_id/commands/:id', ( req, res ) => {
 } );
 
 // Create new custom command
-app.post( '/api/:guild_id/commands', ( req, res ) => {
+app.post( '/api/guilds/:guild_id/commands', ( req, res ) => {
   const guild_id = req.body.guildId;
   const code = req.body.code;
   const response = req.body.response;
@@ -144,7 +144,7 @@ app.post( '/api/:guild_id/commands', ( req, res ) => {
 } );
 
 // Update custom command
-app.put( '/api/:guild_id/commands/:id', ( req, res ) => {
+app.put( '/api/guilds/:guild_id/commands/:id', ( req, res ) => {
 
   const command_id = req.params.id;
 
