@@ -64,6 +64,37 @@ client.on( 'message', message => {
   commandHandler( message );
 } );
 
+// When a role was created on a server
+client.on( 'roleCreate', ( role ) => {
+  const guild = GUILDS[ role.guild.id ];
+
+  const roleMatches = guild.adminRoles.filter( r => r.name === role.name );
+
+  if ( roleMatches.length >= 1 ) return; // For some reason this role already exists in the db
+
+  guild.adminRoles.push( role );
+
+  updateGuild( guild );
+
+} );
+
+// When a role was deleted on a server
+client.on( 'roleDelete', ( role ) => {
+  const guild = GUILDS[ role.guild.id ];
+
+  const roleMatches = guild.adminRoles.filter( r => r.name === role.name );
+
+  if ( roleMatches.length < 1 ) return; // For some reason this role didn't exist in the db
+
+  guild.adminRoles.forEach( ( r, i ) => {
+    if ( r.id !== role.id ) return;
+
+    guild.adminRoles.splice( i, 1 );
+    updateGuild( guild );
+  } );
+
+} );
+
 function startup() {
   return new Promise( resolve => {
     console.log( 'Fetching guilds...' );
