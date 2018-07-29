@@ -13,7 +13,7 @@ export function adminRolesCommand( message ) {
   const options = [ 'add', 'remove' ];
   const flags = message.guild.roles.array().map( role => role.name );
 
-  const option = args.shift.toLowerCase();
+  const option = args.shift().toLowerCase();
   const flag = args.shift().toLowerCase;
 
   if ( !options.includes( option ) ) {
