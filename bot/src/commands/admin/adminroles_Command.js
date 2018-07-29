@@ -52,12 +52,12 @@ export function adminRolesCommand( message ) {
 
       guild.adminRoles.splice( i, 1 );
     } );
-
-    // Update guild
-    updateGuild( guild )
-      .then( updatedGuild => {
-        GUILDS[ message.guild.id ] = updatedGuild;
-        message.reply( `Successfully added '${ flag }' to admin roles.`)
-      } )
   }
+
+  // Update guild
+  updateGuild( guild )
+  .then( updatedGuild => {
+    GUILDS[ message.guild.id ] = updatedGuild;
+    message.reply( `Successfully ${ option }ed '${ flag }' to admin roles.`)
+  } )
 }
