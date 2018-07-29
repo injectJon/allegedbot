@@ -12,10 +12,10 @@ export function adminRolesCommand( message ) {
 
   const options = [ 'add', 'remove' ];
   const flags = message.guild.roles.array().map( role => role.name );
-  console.log( flags );
+  // console.log( flags );
 
   const option = args.shift().toLowerCase();
-  const flag = args.shift().toLowerCase;
+  const flag = args.shift().toLowerCase();
 
   if ( !options.includes( option ) ) {
     message.reply( `Unknown option '${ option }'` );
