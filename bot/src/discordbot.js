@@ -74,7 +74,11 @@ client.on( 'roleCreate', ( role ) => {
 
   guild.adminRoles.push( role );
 
-  updateGuild( guild );
+  updateGuild( guild )
+    .then( updatedGuild => {
+      GUILDS[ role.guild.id ] = updatedGuild;
+      console.log( `Added the '${ role.name }' role from ${ role.guild.name } to the database.`)
+    } );
 
 } );
 
@@ -90,7 +94,11 @@ client.on( 'roleDelete', ( role ) => {
     if ( r.id !== role.id ) return;
 
     guild.adminRoles.splice( i, 1 );
-    updateGuild( guild );
+    updateGuild( guild )
+      .then( updatedGuild => {
+        GUILDS[ role.guild.id ] = updatedGuild;
+        console.log( `Removed the '${ role.name }' role from ${ role.guild.name } from the database.`)
+      } );
   } );
 
 } );
