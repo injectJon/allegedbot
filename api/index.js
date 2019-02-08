@@ -4,6 +4,11 @@ const app = express();
 const bodyParser = require( 'body-parser' );
 const mongoose = require( 'mongoose' );
 
+// lore foundry imports
+const fs = require( 'fs' );
+const parser = require( 'xml2json' );
+const fetch = require( 'node-fetch' );
+
 // Mongoose Models
 const Guild = require( './models/Guild' );
 const CustomCommand = require( './models/CustomCommand' );
@@ -171,6 +176,65 @@ app.put( '/api/:guild_id/commands/:id', ( req, res ) => {
     }
   );
 } );
+
+// lore foundry
+// fetch updated rss feed of shows and parse on an interval
+const url = `http://thelorefoundry.libsyn.com/rss`;
+let lorefoundry_shows;
+
+const fetchRssFeed = () => {
+  return new Promise( ( resolve, reject ) => {
+      fetch( url )
+          .then( res => {
+              const dest = fs.createWriteStream( './rss.xml' );
+              res.body.pipe( dest );
+              res.body.on( "error", ( err ) => {
+                  dest.close();
+              } );
+              dest.on( "finish", () => {
+                  dest.close();
+                  fs.readFile( './rss.xml', ( err, rss ) => {
+                      const json = parser.toJson( rss, { object: true, coerce: true } );
+                      resolve( json.rss.channel.item );
+                  } );
+              } );
+          } );
+  } );
+}
+
+const parseFeed = () => {
+  fetchRssFeed().then( episodes => {
+    // parse into object of relevent episode info
+    // console.log( episodes[0] );
+    const ep = episodes[ 0 ];
+    const formattedEpisodes = episodes.map( ep => {
+        return {
+            title: ep.title,
+            pubDate: ep.pubDate,
+            description: ep[ 'itunes:summary' ],
+            url: ep.enclosure.url,
+            meta: {
+                length: ep.enclosure.length,
+                duration: ep[ 'itunes:duration' ],
+                season: ep[ 'itunes:season' ],
+                episode: ep[ 'itunes:episode' ],
+            },
+        };
+    } );
+  
+    lorefoundry_shows = formattedEpisodes;
+    console.log('length', lorefoundry_shows.length );
+  } );
+};
+
+parseFeed();
+setInterval( () => parseFeed(), 60000 );
+
+// lore foundry
+// get request from client for rss feed of shows
+app.get( '/api/lorefoundry/rss', ( req, res ) => {
+  res.json( { success: true, shows: lorefoundry_shows } );
+} )
 
 const port = process.env.PORT || 3000;
 app.listen( port, () => console.log( `Listening on port ${ port }.` ) );
