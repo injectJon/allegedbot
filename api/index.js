@@ -179,7 +179,7 @@ app.put( '/api/:guild_id/commands/:id', ( req, res ) => {
 
 // lore foundry
 // fetch updated rss feed of shows and parse on an interval
-const url = `http://thelorefoundry.libsyn.com/rss`;
+const url = `https://thelorefoundry.libsyn.com/rss`;
 let lorefoundry_shows;
 
 const fetchRssFeed = () => {
